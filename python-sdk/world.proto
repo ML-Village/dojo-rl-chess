@@ -1,0 +1,101 @@
+syntax = "proto3";
+package world;
+
+import "types.proto";
+import "google/protobuf/empty.proto";
+
+
+// The World service provides information about the world.
+service World {
+    // Retrieves metadata about the World including all the registered components and systems.
+    rpc WorldMetadata (MetadataRequest) returns (MetadataResponse);
+   
+    // Subscribes to models updates.
+    rpc SubscribeModels (SubscribeModelsRequest) returns (stream SubscribeModelsResponse);
+
+    // Subscribe to entity updates.
+    rpc SubscribeEntities (SubscribeEntitiesRequest) returns (stream SubscribeEntityResponse);
+
+    // Update entity subscription
+    rpc UpdateEntitiesSubscription (UpdateEntitiesSubscriptionRequest) returns (google.protobuf.Empty);
+
+    // Retrieve entities
+    rpc RetrieveEntities (RetrieveEntitiesRequest) returns (RetrieveEntitiesResponse);
+
+    // Subscribe to entity updates.
+    rpc SubscribeEventMessages (SubscribeEntitiesRequest) returns (stream SubscribeEntityResponse);
+
+    // Update entity subscription
+    rpc UpdateEventMessagesSubscription (UpdateEntitiesSubscriptionRequest) returns (google.protobuf.Empty);
+
+    // Retrieve entities
+    rpc RetrieveEventMessages (RetrieveEntitiesRequest) returns (RetrieveEntitiesResponse);
+
+    // Retrieve events
+    rpc RetrieveEvents (RetrieveEventsRequest) returns (RetrieveEventsResponse);
+
+    // Subscribe to events
+    rpc SubscribeEvents (SubscribeEventsRequest) returns (stream SubscribeEventsResponse);
+}
+
+
+// A request to retrieve metadata for a specific world ID.
+message MetadataRequest {
+
+}
+
+// The metadata response contains addresses and class hashes for the world.
+message MetadataResponse {
+   types.WorldMetadata metadata = 1;
+}
+
+message SubscribeModelsRequest {
+    // The list of model keys to subscribe to.
+    repeated types.ModelKeysClause models_keys = 1;
+}
+
+message SubscribeModelsResponse {
+    // List of models that have been updated.
+    types.ModelUpdate model_update = 1;
+}
+
+message SubscribeEntitiesRequest {
+    repeated types.EntityKeysClause clauses = 1;
+}
+
+message UpdateEntitiesSubscriptionRequest {
+    uint64 subscription_id = 1;
+    repeated types.EntityKeysClause clauses = 2;
+}
+
+message SubscribeEntityResponse {
+    types.Entity entity = 1;
+    uint64 subscription_id = 2;
+}
+
+message RetrieveEntitiesRequest {
+    // The entities to retrieve
+    types.Query query = 1;
+}
+
+message RetrieveEntitiesResponse {
+    repeated types.Entity entities = 1;
+    uint32 total_count = 2;
+}
+
+message RetrieveEventsRequest {
+    // The events to retrieve
+    types.EventQuery query = 1;
+}
+
+message RetrieveEventsResponse {
+    repeated types.Event events = 1;
+}
+
+message SubscribeEventsRequest {
+    types.KeysClause keys = 1;
+}
+
+message SubscribeEventsResponse {
+    types.Event event = 1;
+}
