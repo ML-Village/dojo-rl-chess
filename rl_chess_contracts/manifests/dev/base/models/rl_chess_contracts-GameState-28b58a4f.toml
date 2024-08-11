@@ -1,0 +1,56 @@
+kind = "DojoModel"
+class_hash = "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d"
+original_class_hash = "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d"
+abi = "manifests/dev/base/abis/models/rl_chess_contracts-GameState-28b58a4f.json"
+tag = "rl_chess_contracts-GameState"
+manifest_name = "rl_chess_contracts-GameState-28b58a4f"
+
+[[members]]
+name = "game_id"
+type = "u128"
+key = true
+
+[[members]]
+name = "white"
+type = "u8"
+key = false
+
+[[members]]
+name = "turn"
+type = "u32"
+key = false
+
+[[members]]
+name = "turn_color"
+type = "u8"
+key = false
+
+[[members]]
+name = "w_turn_expiry_time"
+type = "u64"
+key = false
+
+[[members]]
+name = "b_turn_expiry_time"
+type = "u64"
+key = false
+
+[[members]]
+name = "w_total_time_left"
+type = "u64"
+key = false
+
+[[members]]
+name = "b_total_time_left"
+type = "u64"
+key = false
+
+[[members]]
+name = "game_start"
+type = "u64"
+key = false
+
+[[members]]
+name = "game_end"
+type = "u64"
+key = false

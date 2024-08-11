@@ -1,0 +1,21 @@
+kind = "DojoModel"
+class_hash = "0x66b71d90ecb9f1e5e368a67cdb1a7e322343b2e90fd94f564cd2c8c1d6c188b"
+original_class_hash = "0x66b71d90ecb9f1e5e368a67cdb1a7e322343b2e90fd94f564cd2c8c1d6c188b"
+abi = "manifests/dev/base/abis/models/rl_chess_contracts-GameFormat-1a210de8.json"
+tag = "rl_chess_contracts-GameFormat"
+manifest_name = "rl_chess_contracts-GameFormat-1a210de8"
+
+[[members]]
+name = "game_format_id"
+type = "u16"
+key = true
+
+[[members]]
+name = "turn_expiry"
+type = "u64"
+key = false
+
+[[members]]
+name = "total_time_per_side"
+type = "u64"
+key = false

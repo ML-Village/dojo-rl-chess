@@ -1,0 +1,56 @@
+kind = "DojoModel"
+class_hash = "0x3651a13464d8c028fd42ab593eb4e474b5d6d113d9f1fb2d1020a900fb18ee"
+original_class_hash = "0x3651a13464d8c028fd42ab593eb4e474b5d6d113d9f1fb2d1020a900fb18ee"
+abi = "manifests/dev/base/abis/models/rl_chess_contracts-Game-2f660bca.json"
+tag = "rl_chess_contracts-Game"
+manifest_name = "rl_chess_contracts-Game-2f660bca"
+
+[[members]]
+name = "game_id"
+type = "u128"
+key = true
+
+[[members]]
+name = "game_format_id"
+type = "u16"
+key = false
+
+[[members]]
+name = "room_owner_address"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "invitee_address"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "invite_state"
+type = "InviteState"
+key = false
+
+[[members]]
+name = "invite_expiry"
+type = "u64"
+key = false
+
+[[members]]
+name = "result"
+type = "u8"
+key = false
+
+[[members]]
+name = "winner"
+type = "ContractAddress"
+key = false
+
+[[members]]
+name = "room_start"
+type = "u64"
+key = false
+
+[[members]]
+name = "room_end"
+type = "u64"
+key = false
