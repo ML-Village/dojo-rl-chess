@@ -1,19 +1,43 @@
 import { Account, AccountInterface } from "starknet";
 import { DojoProvider } from "@dojoengine/core";
-import { Direction } from "../../utils";
 
-const NAMESPACE = "dojo_starter";
+const NAMESPACE = "rl_chess_contracts";
 
 export interface IWorld {
-    actions: {
-        spawn: (props: { account: AccountInterface }) => Promise<any>;
-        move: (props: MoveProps) => Promise<any>;
+    lobby: {
+        register_player: (props: UpdatePlayerProps) => Promise<any>;
+        update_player: (props: UpdatePlayerProps) => Promise<any>;
+        invite: (props: InviteProps) => Promise<any>;
+        reply_invite: (props: ReplyInviteProps) => Promise<any>;
+        create_game: (props: {account: Account | AccountInterface, game_format_id:number}) => Promise<any>;
+        join_game: (props: {account: Account | AccountInterface, game_id:number}) => Promise<any>;
     };
 }
 
-export interface MoveProps {
+export enum ProfilePicType {
+    Undefined = 0,
+    Native = 1,
+    External = 2,
+}
+
+export interface UpdatePlayerProps {
     account: Account | AccountInterface;
-    direction: Direction;
+    name: string;
+    profile_pic_type: ProfilePicType;
+    profile_pic_uri: string;
+}
+
+export interface InviteProps {
+    account: Account | AccountInterface;
+    game_format_id: number;
+    invitee_address: bigint;
+    invite_expiry: number;
+}
+
+export interface ReplyInviteProps {
+    account: Account | AccountInterface;
+    game_id: number,
+    accepted: boolean;
 }
 
 const handleError = (action: string, error: unknown) => {
@@ -22,39 +46,105 @@ const handleError = (action: string, error: unknown) => {
 };
 
 export const setupWorld = async (provider: DojoProvider): Promise<IWorld> => {
-    const actions = () => ({
-        spawn: async ({ account }: { account: AccountInterface }) => {
+    const lobby = () => ({
+        register_player: async ({ account, name, profile_pic_type, profile_pic_uri }: UpdatePlayerProps) => {
             try {
                 return await provider.execute(
                     account,
                     {
-                        contractName: "actions",
-                        entrypoint: "spawn",
-                        calldata: [],
+                        contractName: "lobby",
+                        entrypoint: "register_player",
+                        calldata: [name, profile_pic_type, profile_pic_uri],
                     },
                     NAMESPACE
                 );
             } catch (error) {
-                handleError("spawn", error);
+                handleError("register_player", error);
             }
         },
 
-        move: async ({ account, direction }: MoveProps) => {
+        update_player: async ({ account, name, profile_pic_type, profile_pic_uri }: UpdatePlayerProps) => {
             try {
                 return await provider.execute(
                     account,
                     {
-                        contractName: "actions",
-                        entrypoint: "move",
-                        calldata: [direction],
+                        contractName: "lobby",
+                        entrypoint: "update_player",
+                        calldata: [name, profile_pic_type, profile_pic_uri],
                     },
                     NAMESPACE
                 );
             } catch (error) {
-                handleError("move", error);
+                handleError("update_player", error);
             }
         },
+
+        invite: async ({ account, game_format_id, invitee_address, invite_expiry }: InviteProps) => {
+            try {
+                return await provider.execute(
+                    account,
+                    {
+                        contractName: "lobby",
+                        entrypoint: "invite",
+                        calldata: [game_format_id, invitee_address, invite_expiry],
+                    },
+                    NAMESPACE
+                );
+            } catch (error) {
+                handleError("invite", error);
+            }
+        },
+
+        reply_invite: async ({ account, game_id, accepted }: ReplyInviteProps) => {
+            try {
+                return await provider.execute(
+                    account,
+                    {
+                        contractName: "lobby",
+                        entrypoint: "reply_invite",
+                        calldata: [game_id, accepted],
+                    },
+                    NAMESPACE
+                );
+            } catch (error) {
+                handleError("reply_invite", error);
+            }
+        },
+
+        create_game: async ({ account, game_format_id }: {account: Account | AccountInterface, game_format_id:number}) => {
+            try {
+                return await provider.execute(
+                    account,
+                    {
+                        contractName: "lobby",
+                        entrypoint: "create_game",
+                        calldata: [game_format_id],
+                    },
+                    NAMESPACE
+                );
+            } catch (error) {
+                handleError("create_game", error);
+            }
+        },
+
+        join_game: async ({ account, game_id }: {account: Account | AccountInterface, game_id:number}) => {
+            try {
+                return await provider.execute(
+                    account,
+                    {
+                        contractName: "lobby",
+                        entrypoint: "join_game",
+                        calldata: [game_id],
+                    },
+                    NAMESPACE
+                );
+            } catch (error) {
+                handleError("join_game", error);
+            }
+        },
+
+
     });
 
-    return { actions: actions() };
+    return { lobby: lobby() };
 };

@@ -1,81 +1,84 @@
-import "./App.css";
-import { useComponentValue, useQuerySync } from "@dojoengine/react";
-import { Entity } from "@dojoengine/recs";
+import { useComponentValue, useQuerySync, useEntityQuery } from "@dojoengine/react";
+import { Entity, Has, HasValue, getComponentValueStrict } from "@dojoengine/recs";
 import { useEffect, useState } from "react";
-import { Direction } from "./utils";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
+import { AccountInterface } from "starknet";
+import { RegistrationModal } from "@/components/RegistrationModal";
 
 function App() {
     const {
         setup: {
-            systemCalls: { spawn, move },
-            clientComponents: { Position, Moves, DirectionsAvailable },
+            systemCalls: { register_player, update_player, invite, reply_invite },
+            clientComponents: { Game, GameState, Player },
             toriiClient,
             contractComponents,
         },
         account,
     } = useDojo();
 
-    useQuerySync(toriiClient, contractComponents as any, [
-        {
-            Keys: {
-                keys: [BigInt(account?.account.address).toString()],
-                models: [
-                    "dojo_starter-Position",
-                    "dojo_starter-Moves",
-                    "dojo_starter-DirectionsAvailable",
-                ],
-                pattern_matching: "FixedLen",
-            },
-        },
-    ]);
+    // useQuerySync(toriiClient, contractComponents as any, [
+    //     {
+    //         Keys: {
+    //             keys: [BigInt(account?.account.address).toString()],
+    //             models: [
+    //                 //"rl_chess_contracts-Game",
+    //                 "rl_chess_contracts-Player",
+    //                 //"rl_chess_contracts-GameState",
+    //             ],
+    //             pattern_matching: "FixedLen",
+    //         },
+    //     },
+    // ]);
 
-    const [clipboardStatus, setClipboardStatus] = useState({
-        message: "",
-        isError: false,
-    });
 
-    // entity id we are syncing
-    const entityId = getEntityIdFromKeys([
-        BigInt(account?.account.address),
-    ]) as Entity;
+    //const hasGame = useEntityQuery([Has(Game)]);
+    // console.log("game")
+    // console.log(hasGame)
 
-    // get current component values
-    const position = useComponentValue(Position, entityId);
-    const moves = useComponentValue(Moves, entityId);
-    const directions = useComponentValue(DirectionsAvailable, entityId);
+    //const hasPlayers = useEntityQuery([Has(Player)]);
+    // console.log("players")
+    // console.log(hasPlayers)
 
-    const handleRestoreBurners = async () => {
-        try {
-            await account?.applyFromClipboard();
-            setClipboardStatus({
-                message: "Burners restored successfully!",
-                isError: false,
-            });
-        } catch (error) {
-            setClipboardStatus({
-                message: `Failed to restore burners from clipboard`,
-                isError: true,
-            });
-        }
-    };
+    //hasPlayers.map((entity) => {
+        // console.log(entity)
+        // console.log(getComponentValueStrict(Player, entity))
+    //})
 
-    useEffect(() => {
-        if (clipboardStatus.message) {
-            const timer = setTimeout(() => {
-                setClipboardStatus({ message: "", isError: false });
-            }, 3000);
+    // const [clipboardStatus, setClipboardStatus] = useState({
+    //     message: "",
+    //     isError: false,
+    // });
 
-            return () => clearTimeout(timer);
-        }
-    }, [clipboardStatus.message]);
+    // const handleRestoreBurners = async () => {
+    //     try {
+    //         await account?.applyFromClipboard();
+    //         setClipboardStatus({
+    //             message: "Burners restored successfully!",
+    //             isError: false,
+    //         });
+    //     } catch (error) {
+    //         setClipboardStatus({
+    //             message: `Failed to restore burners from clipboard`,
+    //             isError: true,
+    //         });
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     if (clipboardStatus.message) {
+    //         const timer = setTimeout(() => {
+    //             setClipboardStatus({ message: "", isError: false });
+    //         }, 3000);
+
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [clipboardStatus.message]);
 
     return (
         <>
-            <button onClick={() => account?.create()}>
-                {account?.isDeploying ? "deploying burner" : "create burner"}
-            </button>
+        <RegistrationModal />
+            {/* 
             {account && account?.list().length > 0 && (
                 <button onClick={async () => await account?.copyToClipboard()}>
                     Save Burners to Clipboard
@@ -88,96 +91,7 @@ function App() {
                 <div className={clipboardStatus.isError ? "error" : "success"}>
                     {clipboardStatus.message}
                 </div>
-            )}
-
-            <div className="card">
-                <div>{`burners deployed: ${account.count}`}</div>
-                <div>
-                    select signer:{" "}
-                    <select
-                        value={account ? account.account.address : ""}
-                        onChange={(e) => account.select(e.target.value)}
-                    >
-                        {account?.list().map((account, index) => {
-                            return (
-                                <option value={account.address} key={index}>
-                                    {account.address}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </div>
-                <div>
-                    <button onClick={() => account.clear()}>
-                        Clear burners
-                    </button>
-                    <p>
-                        You will need to Authorise the contracts before you can
-                        use a burner. See readme.
-                    </p>
-                </div>
-            </div>
-
-            <div className="card">
-                <button onClick={() => spawn(account.account)}>Spawn</button>
-                <div>
-                    Moves Left: {moves ? `${moves.remaining}` : "Need to Spawn"}
-                </div>
-                <div>
-                    Position:{" "}
-                    {position
-                        ? `${position?.vec.x}, ${position?.vec.y}`
-                        : "Need to Spawn"}
-                </div>
-
-                <div>{moves && moves.last_direction}</div>
-
-                <div>
-                    <div>Available Positions</div>
-                    {directions?.directions.map((a: any, index: any) => (
-                        <div key={index} className="">
-                            {a}
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div className="card">
-                <div>
-                    <button
-                        onClick={() =>
-                            position && position.vec.y > 0
-                                ? move(account.account, Direction.Up)
-                                : console.log("Reach the borders of the world.")
-                        }
-                    >
-                        Move Up
-                    </button>
-                </div>
-                <div>
-                    <button
-                        onClick={() =>
-                            position && position.vec.x > 0
-                                ? move(account.account, Direction.Left)
-                                : console.log("Reach the borders of the world.")
-                        }
-                    >
-                        Move Left
-                    </button>
-                    <button
-                        onClick={() => move(account.account, Direction.Right)}
-                    >
-                        Move Right
-                    </button>
-                </div>
-                <div>
-                    <button
-                        onClick={() => move(account.account, Direction.Down)}
-                    >
-                        Move Down
-                    </button>
-                </div>
-            </div>
+            )} */}
         </>
     );
 }

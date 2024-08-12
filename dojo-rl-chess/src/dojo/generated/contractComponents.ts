@@ -5,6 +5,7 @@
  */
 
 import { defineComponent, Type as RecsType, World } from "@dojoengine/recs";
+import { profile } from "console";
 
 export type ContractComponents = Awaited<
     ReturnType<typeof defineContractComponents>
@@ -12,49 +13,97 @@ export type ContractComponents = Awaited<
 
 export function defineContractComponents(world: World) {
     return {
-        DirectionsAvailable: (() => {
+        
+        Game: (() => {
             return defineComponent(
                 world,
-                { player: RecsType.BigInt, directions: RecsType.StringArray },
+                {
+                    game_id: RecsType.Number,
+                    game_format_id: RecsType.Number,
+                    room_owner_address: RecsType.BigInt,
+                    invitee_address: RecsType.BigInt,
+                    invite_state: RecsType.Number,
+                    invite_expiry: RecsType.Number,
+                    result: RecsType.Number,
+                    winner: RecsType.BigInt,
+                    room_start: RecsType.Number,
+                    room_end: RecsType.Number,
+                },
                 {
                     metadata: {
-                        name: "dojo_starter-DirectionsAvailable",
-                        types: ["contractaddress"],
-                        customTypes: ["Direction"],
+                        name: "rl_chess_contracts-Game",
+                        types: ["u128", "u16", "contractaddress", "contractaddress",
+                            "enum", "u64", "u8", "contractaddress", "u64", "u64"
+                        ],
+                        customTypes: ["InviteState"],
                     },
                 }
             );
         })(),
-        Moves: (() => {
+
+        GameFormat: (() => {
             return defineComponent(
                 world,
                 {
-                    player: RecsType.BigInt,
-                    remaining: RecsType.Number,
-                    last_direction: RecsType.Number,
-                    can_move: RecsType.Boolean,
+                    game_format_id: RecsType.Number,
+                    turn_expiry:RecsType.Number,
+                    total_time_per_side: RecsType.Number,
                 },
                 {
                     metadata: {
-                        name: "dojo_starter-Moves",
-                        types: ["contractaddress", "u8", "enum", "bool"],
-                        customTypes: ["Direction"],
+                        name: "rl_chess_contracts-GameFormat",
+                        types: ["u16", "u64", "u64"],
+                        customTypes: [],
                     },
                 }
             );
         })(),
-        Position: (() => {
+
+        GameState: (() => {
             return defineComponent(
                 world,
                 {
-                    player: RecsType.BigInt,
-                    vec: { x: RecsType.Number, y: RecsType.Number },
+                    game_id: RecsType.Number,
+                    white:RecsType.Number,
+                    turn: RecsType.Number,
+                    turn_color: RecsType.Number,
+
+                    w_turn_expiry_time: RecsType.Number,
+                    b_turn_expiry_time: RecsType.Number,
+                    w_total_time_left: RecsType.Number, // Unix time, total game time (0 for unlimited)
+                    b_total_time_left: RecsType.Number, // Unix time, total game time (0 for unlimited)
+                    
+                    game_start: RecsType.Number, // Unix time, started
+                    game_end: RecsType.Number, // Unix time, ended
                 },
                 {
                     metadata: {
-                        name: "dojo_starter-Position",
-                        types: ["contractaddress", "u32", "u32"],
-                        customTypes: ["Vec2"],
+                        name: "rl_chess_contracts-GameState",
+                        types: ["u128", "u8", "u32", "u8",
+                            "u64", "u64", "u64", "u64",
+                            "u64", "u64"
+                        ],
+                        customTypes: [""],
+                    },
+                }
+            );
+        })(),
+
+        Player: (() => {
+            return defineComponent(
+                world,
+                {
+                    address: RecsType.BigInt,
+                    name: RecsType.BigInt,
+                    profile_pic_type: RecsType.Number,
+                    profile_pic_uri: RecsType.String,
+                    timestamp: RecsType.Number,
+                },
+                {
+                    metadata: {
+                        name: "rl_chess_contracts-Player",
+                        types: ["contractaddress", "felt252", "enum", "bytearray", "u64"],
+                        customTypes: ["ProfilePicType"],
                     },
                 }
             );
