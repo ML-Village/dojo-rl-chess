@@ -28,7 +28,8 @@ export const RegistrationCarousel = () => {
 
         pfpCarouselApi.on("select", () => {
             // Do something on select.
-            //console.log("Selected Pilot:", pfpCarouselApi.selectedScrollSnap())
+            console.log("Selected Pilot:", pfpCarouselApi.selectedScrollSnap())
+            //pfpCarouselApi?.scrollTo(pfpCarouselApi.selectedScrollSnap())
         })
     }, [pfpCarouselApi])
 

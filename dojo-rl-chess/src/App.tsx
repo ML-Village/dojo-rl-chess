@@ -2,9 +2,12 @@ import { useComponentValue, useQuerySync, useEntityQuery } from "@dojoengine/rea
 import { Entity, Has, HasValue, getComponentValueStrict } from "@dojoengine/recs";
 import { useEffect, useState } from "react";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useDojo } from "./dojo/useDojo";
+import { useDojo } from "@/dojo/useDojo";
 import { AccountInterface } from "starknet";
-import { RegistrationModal } from "@/components/RegistrationModal";
+import { BaseNavbar, RegistrationModal, 
+    LobbyControls, LobbyTable } from "@/components";
+
+import { useRegModalStore } from "@/store/index";
 
 function App() {
     const {
@@ -17,82 +20,67 @@ function App() {
         account,
     } = useDojo();
 
-    // useQuerySync(toriiClient, contractComponents as any, [
-    //     {
-    //         Keys: {
-    //             keys: [BigInt(account?.account.address).toString()],
-    //             models: [
-    //                 //"rl_chess_contracts-Game",
-    //                 "rl_chess_contracts-Player",
-    //                 //"rl_chess_contracts-GameState",
-    //             ],
-    //             pattern_matching: "FixedLen",
-    //         },
-    //     },
-    // ]);
+    useQuerySync(toriiClient, contractComponents as any, [
+        {
+            Keys: {
+                keys: [BigInt(account?.account.address).toString()],
+                models: [
+                    //"rl_chess_contracts-Game",
+                    "rl_chess_contracts-Player",
+                    //"rl_chess_contracts-GameState",
+                ],
+                pattern_matching: "FixedLen",
+            },
+        },
+    ]);
 
 
-    //const hasGame = useEntityQuery([Has(Game)]);
-    // console.log("game")
-    // console.log(hasGame)
+    //const {open, setOpen} = useRegModalStore();
+    const entityId = getEntityIdFromKeys([
+        BigInt(account?.account.address),
+    ]) as Entity;
+    // get current component values
+    const player = useComponentValue(Player, entityId);
 
-    //const hasPlayers = useEntityQuery([Has(Player)]);
-    // console.log("players")
-    // console.log(hasPlayers)
-
-    //hasPlayers.map((entity) => {
-        // console.log(entity)
-        // console.log(getComponentValueStrict(Player, entity))
-    //})
-
-    // const [clipboardStatus, setClipboardStatus] = useState({
-    //     message: "",
-    //     isError: false,
-    // });
-
-    // const handleRestoreBurners = async () => {
-    //     try {
-    //         await account?.applyFromClipboard();
-    //         setClipboardStatus({
-    //             message: "Burners restored successfully!",
-    //             isError: false,
-    //         });
-    //     } catch (error) {
-    //         setClipboardStatus({
-    //             message: `Failed to restore burners from clipboard`,
-    //             isError: true,
-    //         });
-    //     }
-    // };
-
+    // useEffect for invoking modal set in navbar
     // useEffect(() => {
-    //     if (clipboardStatus.message) {
-    //         const timer = setTimeout(() => {
-    //             setClipboardStatus({ message: "", isError: false });
-    //         }, 3000);
-
-    //         return () => clearTimeout(timer);
+    //     // if there is no player or account is not yet loaded
+    //     if (!player || account?.count<0) {
+    //         console.log("player not registered.")
+    //         setOpen(true); // set Modal open if player not registered
+    //         return;
     //     }
-    // }, [clipboardStatus.message]);
+    //     setOpen(false)
+    // },[player, account])
+
 
     return (
-        <>
-        <RegistrationModal />
-            {/* 
-            {account && account?.list().length > 0 && (
-                <button onClick={async () => await account?.copyToClipboard()}>
-                    Save Burners to Clipboard
-                </button>
-            )}
-            <button onClick={handleRestoreBurners}>
-                Restore Burners from Clipboard
-            </button>
-            {clipboardStatus.message && (
-                <div className={clipboardStatus.isError ? "error" : "success"}>
-                    {clipboardStatus.message}
+        <div className="flex flex-col
+        bg-blue-800/20 h-screen
+        ">
+            <RegistrationModal />
+            <BaseNavbar />
+
+            <LobbyControls/>
+
+            <div className="border border-orange-600
+            w-full flex justify-center
+            
+            ">
+                <div className="w-2/3
+                flex justify-center space-x-4
+                border border-blue-500">
+                    <LobbyTable />
+                    <div className="border-2 border-purple-700
+                    w-[600px] h-full
+                    ">
+                        Events Screen
+                    </div>
                 </div>
-            )} */}
-        </>
+            </div>
+        
+            
+        </div>
     );
 }
 

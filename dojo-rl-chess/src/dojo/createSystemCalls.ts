@@ -10,14 +10,18 @@ import {
 // import { uuid } from "@latticexyz/utils";
 import { ClientComponents } from "./createClientComponents";
 // import { Direction, updatePositionWithDirection } from "../utils";
-// import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { getEntityIdFromKeys, 
+    getEvents,
+    setComponentsFromEvents, } from "@dojoengine/utils";
 import type { IWorld } from "./generated/generated";
+import { ContractComponents } from "./generated/contractComponents";
 import { join } from "path";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
     { client }: { client: IWorld },
+    contractComponents: ContractComponents,
     { Game, GameFormat, GameState, Player  }: ClientComponents,
     world: World
 ) {
@@ -25,27 +29,39 @@ export function createSystemCalls(
         name: string, profile_pic_type: number, profile_pic_uri: string,) => {
 
         try {
-            await client.lobby.register_player({
+            const { transaction_hash } = await client.lobby.register_player({
                 account,
                 name, 
                 profile_pic_type, 
                 profile_pic_uri
             });
-
+            console.log(
+                await account.waitForTransaction(transaction_hash, {
+                    retryInterval: 100,
+                })
+            );
+            setComponentsFromEvents(
+                contractComponents,
+                getEvents(
+                    await account.waitForTransaction(transaction_hash, {
+                    retryInterval: 100,
+                    })
+                )
+            );
             // Wait for the indexer to update the entity
             // By doing this we keep the optimistic UI in sync with the actual state
-            await new Promise<void>((resolve) => {
-                defineSystem(
-                    world,
-                    [
-                        Has(Player),
-                        HasValue(Player, { address: BigInt(account.address) }),
-                    ],
-                    () => {
-                        resolve();
-                    }
-                );
-            });
+            // await new Promise<void>((resolve) => {
+            //     defineSystem(
+            //         world,
+            //         [
+            //             Has(Player),
+            //             HasValue(Player, { address: BigInt(account.address) }),
+            //         ],
+            //         () => {
+            //             resolve();
+            //         }
+            //     );
+            // });
         } catch (e) {
             console.log(e);
         } finally {
@@ -57,13 +73,26 @@ export function createSystemCalls(
         name: string, profile_pic_type: number, profile_pic_uri: string,) => {
 
         try {
-            await client.lobby.update_player({
+            const { transaction_hash } =  await client.lobby.update_player({
                 account,
                 name, 
                 profile_pic_type, 
                 profile_pic_uri
             });
 
+            console.log(
+                await account.waitForTransaction(transaction_hash, {
+                    retryInterval: 100,
+                })
+            );
+            setComponentsFromEvents(
+                contractComponents,
+                getEvents(
+                    await account.waitForTransaction(transaction_hash, {
+                    retryInterval: 100,
+                    })
+                )
+            );
             // Wait for the indexer to update the entity
             // By doing this we keep the optimistic UI in sync with the actual state
             await new Promise<void>((resolve) => {

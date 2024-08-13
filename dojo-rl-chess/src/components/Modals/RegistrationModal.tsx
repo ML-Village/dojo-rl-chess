@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
 import { RegistrationCarousel } from "@/components/Carousels";
-import { usePfpStore } from "@/store/index";
+import { usePfpStore, useRegModalStore } from "@/store/index";
 
 import { useDojo } from "@/dojo/useDojo";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue, useQuerySync } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 
 import { formatAddress } from '@/utils';
@@ -22,12 +22,14 @@ export const RegistrationModal: React.FC = () => {
     setup: {
       systemCalls: { register_player, update_player },
       clientComponents: { Player, Game },
+      toriiClient,
+      contractComponents,
   },
     account,
   } = useDojo();
 
   // modal
-  const [open, setOpen] = useState(true);
+  const {open, setOpen} = useRegModalStore();
   const { pfpCarouselApi } = usePfpStore();
 
   // entity id we are syncing
@@ -38,6 +40,7 @@ export const RegistrationModal: React.FC = () => {
   console.log("entityId loaded: ", entityId);
   // get current component values
   const player = useComponentValue(Player, entityId);
+  console.log(player);
 
   // Player Name States
   const [nameValue, setNameValue] = useState('');
@@ -46,10 +49,25 @@ export const RegistrationModal: React.FC = () => {
   };
   const [ playerRegistered, setPlayerRegistered ] = useState(false);
 
+  useQuerySync(toriiClient, contractComponents as any, [
+    {
+        Keys: {
+            keys: [BigInt(account?.account.address).toString()],
+            models: [
+                //"rl_chess_contracts-Game",
+                "rl_chess_contracts-Player",
+                //"rl_chess_contracts-GameState",
+            ],
+            pattern_matching: "FixedLen",
+        },
+    },
+  ]);
+
   // use to check if there is existing registered player
   useEffect(() => {
     // if there is no player or account is not yet loaded
     if (!player || account?.count<0) {
+      console.log("player not registered.")
       pfpCarouselApi?.scrollTo(0);
       setNameValue("");
       setPlayerRegistered(false);
@@ -58,16 +76,18 @@ export const RegistrationModal: React.FC = () => {
 
     // else player is registered
     setPlayerRegistered(true);
-    console.log("player: ", player);
+    console.log("player registered.")
 
     // do nothing if there is no name and set the name input to empty
     if (player?.name === undefined) {
       setNameValue("");
+      console.log("player name undefined")
       return
     }
 
     if (!player?.name) {
       setNameValue("");
+      console.log("no player name")
       return
     }
 
@@ -76,27 +96,52 @@ export const RegistrationModal: React.FC = () => {
     setNameValue(feltToString(String(player?.name)))
 
     if (player?.profile_pic_uri === undefined) return;
-    console.log("player pfp num: ", player?.profile_pic_uri)
-    console.log("player pfp type: ", typeof (player?.profile_pic_uri))
+    
+    // parse the profile pic uri to int
+    console.log("Native Profile Pic Type?", player?.profile_pic_type == "Native")
+    console.log(player?.profile_pic_uri)
+    const player_profile_pic_uri = player?.profile_pic_type == "Native" ? 
+      player?.profile_pic_uri.charCodeAt(0) :
+      JSON.stringify(player?.profile_pic_uri)
 
     if(!pfpCarouselApi) return;
-    console.log("scrolling to: ", parseInt(player?.profile_pic_uri));
-    if(!player?.profile_pic_uri) return;
-    pfpCarouselApi?.scrollTo(parseInt(player?.profile_pic_uri))
+    if(!player_profile_pic_uri) {
+      console.log("no profile pic uri")
+      return;
+    }
+
+    if (typeof(player_profile_pic_uri) === "number") {
+      console.log("already registered profile pic num, scrolling to: ", player_profile_pic_uri)
+      pfpCarouselApi?.scrollTo(player_profile_pic_uri)
+    }
 
   }, [player, pfpCarouselApi, account]);
 
-  const registerName = () => {
-    
+  const registerPlayer = async () => {
     if (!nameValue || nameValue.trim() === '') return;
     const pfpNum = pfpCarouselApi?.selectedScrollSnap()
-    console.log("pfpNum: ", pfpNum);
+
     if (pfpNum=== undefined) return;
 
     console.log("registering: ", nameValue);
-    register_player(account.account as AccountInterface, 
+    console.log("registering pfp: ", pfpNum.toString());
+    await register_player(account.account as AccountInterface, 
       nameValue, 1, pfpNum.toString());
-  }  
+    }  
+
+  const updatePlayer = async () => {
+    if (!nameValue || nameValue.trim() === '') return;
+    const pfpNum = pfpCarouselApi?.selectedScrollSnap()
+    if (pfpNum=== undefined) return;
+
+    console.log("updating name, address: ", nameValue, account.account.address);
+    console.log("updating pfp: ", pfpNum.toString());
+
+    await update_player(account.account as AccountInterface, 
+      nameValue, 1, pfpNum.toString());
+    }  
+  
+  
 
   //console.log("current pfp num: ", pfpCarouselApi?.selectedScrollSnap())
   return (
@@ -118,7 +163,7 @@ export const RegistrationModal: React.FC = () => {
                 {/* create burners */}
                 <div className="w-full flex py-1">
                   <Button 
-                  className="bg-yellow-200
+                  className="bg-orange-300
                   border border-gray-700
                   mx-1 ml-auto 
                   p-1 px-2 rounded-md
@@ -128,7 +173,7 @@ export const RegistrationModal: React.FC = () => {
                         clear burners
                     </Button>
                   <Button 
-                  className="bg-emerald-700
+                  className="bg-blue-900/80
                   border border-gray-700
                   p-1 px-2 rounded-md
                   "
@@ -187,11 +232,33 @@ export const RegistrationModal: React.FC = () => {
 
                 <RegistrationCarousel />
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end
+          space-x-2
+          ">
+            
+            {
+                playerRegistered ?
+                <Button 
+                className="bg-blue-900/80
+                hover:cursor-pointer
+                "
+                onClick={updatePlayer}
+                >Update PFP</Button>
+                :
+                <Button 
+                className="bg-blue-700
+                hover:cursor-pointer
+                "
+                onClick={registerPlayer}
+                >Register Profile</Button>
+            }
             <Button 
-            className="bg-emerald-700"
-            onClick={registerName}
-            >Confirm Player Details</Button>
+                className="bg-green-800
+                hover:cursor-pointer
+                "
+                disabled={(!player || account?.count<0)}
+                onClick={() => setOpen(false)}
+                >Confirm Config</Button>
           </div>
       </DialogContent>
     </Dialog>

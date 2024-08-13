@@ -95,7 +95,7 @@ export function defineContractComponents(world: World) {
                 {
                     address: RecsType.BigInt,
                     name: RecsType.BigInt,
-                    profile_pic_type: RecsType.Number,
+                    profile_pic_type: RecsType.String,
                     profile_pic_uri: RecsType.String,
                     timestamp: RecsType.Number,
                 },
