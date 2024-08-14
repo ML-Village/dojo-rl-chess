@@ -5,7 +5,7 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "@/dojo/useDojo";
 import { AccountInterface } from "starknet";
 import { BaseNavbar, RegistrationModal, 
-    LobbyControls, LobbyTable } from "@/components";
+    LobbyControls, LobbyTable, LobbyEvents } from "@/components";
 
 import { useRegModalStore } from "@/store/index";
 
@@ -63,19 +63,16 @@ function App() {
 
             <LobbyControls/>
 
-            <div className="border border-orange-600
+            <div className="
             w-full flex justify-center
             
             ">
                 <div className="w-2/3
                 flex justify-center space-x-4
-                border border-blue-500">
+
+                ">
                     <LobbyTable />
-                    <div className="border-2 border-purple-700
-                    w-[600px] h-full
-                    ">
-                        Events Screen
-                    </div>
+                    <LobbyEvents />
                 </div>
             </div>
         

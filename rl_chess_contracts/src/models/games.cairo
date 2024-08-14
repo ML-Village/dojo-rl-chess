@@ -25,6 +25,7 @@ struct Game {
 struct GameFormat {
     #[key]
     game_format_id:u16,
+    //description: felt252,
     turn_expiry: u64, // Unix time, time for each turn to expire (0 for unlimited)
     total_time_per_side: u64, // Unix time, total game time (0 for unlimited)
 }

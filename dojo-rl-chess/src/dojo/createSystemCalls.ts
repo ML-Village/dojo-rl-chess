@@ -193,27 +193,41 @@ export function createSystemCalls(
         game_format_id:number) => {
 
         try {
-            const game_id = await client.lobby.create_game({
+            const { transaction_hash } =  await client.lobby.create_game({
                 account,
                 game_format_id
             });
 
+            console.log(
+                await account.waitForTransaction(transaction_hash, {
+                    retryInterval: 100,
+                })
+            );
+            setComponentsFromEvents(
+                contractComponents,
+                getEvents(
+                    await account.waitForTransaction(transaction_hash, {
+                    retryInterval: 100,
+                    })
+                )
+            );
+
             // Wait for the indexer to update the entity
             // By doing this we keep the optimistic UI in sync with the actual state
-            await new Promise<void>((resolve) => {
-                defineSystem(
-                    world,
-                    [
-                        Has(Game),
-                        HasValue(Game, { 
-                            game_id: game_id
-                        }),
-                    ],
-                    () => {
-                        resolve();
-                    }
-                );
-            });
+            // await new Promise<void>((resolve) => {
+            //     defineSystem(
+            //         world,
+            //         [
+            //             Has(Game),
+            //             HasValue(Game, { 
+            //                 game_id: game_id
+            //             }),
+            //         ],
+            //         () => {
+            //             resolve();
+            //         }
+            //     );
+            // });
         } catch (e) {
             console.log(e);
         } finally {

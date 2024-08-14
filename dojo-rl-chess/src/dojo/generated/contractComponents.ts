@@ -22,7 +22,7 @@ export function defineContractComponents(world: World) {
                     game_format_id: RecsType.Number,
                     room_owner_address: RecsType.BigInt,
                     invitee_address: RecsType.BigInt,
-                    invite_state: RecsType.Number,
+                    invite_state: RecsType.String,
                     invite_expiry: RecsType.Number,
                     result: RecsType.Number,
                     winner: RecsType.BigInt,

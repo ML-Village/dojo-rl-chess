@@ -29,12 +29,12 @@ export const AccountsTable = () => {
     } = useDojo();
 
     const hasPlayers = useEntityQuery([Has(Player)]);
-    console.log("tables:")
-    console.log(hasPlayers);
+    // console.log("tables:")
+    // console.log(hasPlayers);
     const playerData = hasPlayers.map((entity) => {
         return getComponentValueStrict(Player, entity)
     })
-    console.log(playerData);
+    //console.log(playerData);
 
     return (
         <Table>
@@ -42,10 +42,10 @@ export const AccountsTable = () => {
                 <TableRow>
                     <TableHead className="w-[80px] text-center">Profile</TableHead>
                     <TableHead className="w-[200px]">UserName</TableHead>
-                    <TableHead className="w-[90px] text-center">ELO</TableHead>
-                    <TableHead className="w-[90px] text-center">Wins</TableHead>
-                    <TableHead className="w-[90px] text-center">Draws</TableHead>
-                    <TableHead className="w-[90px] text-center">Losses</TableHead>
+                    <TableHead className="text-center">ELO</TableHead>
+                    <TableHead className="text-center">Wins</TableHead>
+                    <TableHead className="text-center">Draws</TableHead>
+                    <TableHead className="text-center">Losses</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>

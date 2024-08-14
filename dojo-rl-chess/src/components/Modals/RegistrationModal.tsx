@@ -37,10 +37,10 @@ export const RegistrationModal: React.FC = () => {
     BigInt(account?.account.address),
   ]) as Entity;
 
-  console.log("entityId loaded: ", entityId);
+  //console.log("entityId loaded: ", entityId);
   // get current component values
   const player = useComponentValue(Player, entityId);
-  console.log(player);
+  //console.log(player);
 
   // Player Name States
   const [nameValue, setNameValue] = useState('');
