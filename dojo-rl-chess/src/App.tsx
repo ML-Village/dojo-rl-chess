@@ -3,11 +3,10 @@ import { Entity, Has, HasValue, getComponentValueStrict } from "@dojoengine/recs
 import { useEffect, useState } from "react";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "@/dojo/useDojo";
-import { AccountInterface } from "starknet";
-import { BaseNavbar, RegistrationModal, 
-    LobbyControls, LobbyTable, LobbyEvents } from "@/components";
+import { BaseNavbar, RegistrationModal } from "@/components";
+import { LobbyPage, GameRoom } from "./pages";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { useRegModalStore } from "@/store/index";
 
 function App() {
     const {
@@ -61,20 +60,13 @@ function App() {
             <RegistrationModal />
             <BaseNavbar />
 
-            <LobbyControls/>
-
-            <div className="
-            w-full flex justify-center
-            
-            ">
-                <div className="w-2/3
-                flex justify-center space-x-4
-
-                ">
-                    <LobbyTable />
-                    <LobbyEvents />
-                </div>
-            </div>
+            <Router>
+                <Routes>
+                    {/* Lobby Page */}
+                    <Route path="/" element={<LobbyPage/>} />
+                    <Route path="/room/:roomId" element={<GameRoom />} />
+                </Routes>
+            </Router>
         
             
         </div>

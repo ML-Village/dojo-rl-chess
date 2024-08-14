@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Table,
     TableBody,
@@ -23,6 +24,7 @@ import { FaChessKnight } from "react-icons/fa";
 import { IoMdInfinite } from "react-icons/io";
 
 export const OpenRooms = () => {
+
     const {
         setup: {
             systemCalls: { register_player, update_player, invite, reply_invite },
@@ -32,6 +34,7 @@ export const OpenRooms = () => {
         },
         account,
     } = useDojo();
+    const navigate = useNavigate();
 
     const hasPlayers = useEntityQuery([Has(Player)]);
     const hasGames = useEntityQuery([Has(Game)]);
@@ -140,7 +143,7 @@ export const OpenRooms = () => {
                             : 
                             'bg-blue-900/80 text-white hover:text-black'}
                         `}
-                        onClick={()=>console.log(g?.game_id)}
+                        onClick={()=>navigate(`/room/${g?.game_id}`)}
                     >
                         
 
