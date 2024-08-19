@@ -47,6 +47,7 @@ struct GameState {
     b_total_time_left: u64, // Unix time, total game time (0 for unlimited)
     
     game_start: u64, // Unix time, started
+    last_move_time: u64, // Unix time, last move
     game_end: u64, // Unix time, ended
 
     // castling rights
@@ -57,6 +58,8 @@ struct GameState {
 
     // move tracker
     halfmove_clock: u16,
+    en_passant_target_x: u8,
+    en_passant_target_y: u8,
     //fullmove_number: u16, //using turn
 
     // NOT DOING ARRAYS OF ARRAYS yet to wait for stability in Cairo/Dojo
