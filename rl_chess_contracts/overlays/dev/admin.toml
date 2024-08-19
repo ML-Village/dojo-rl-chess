@@ -1,0 +1,7 @@
+tag = "rl_chess_contracts-admin"
+writes = [
+    "rl_chess_contracts-GameFormat",
+]
+
+init_calldata = []
+

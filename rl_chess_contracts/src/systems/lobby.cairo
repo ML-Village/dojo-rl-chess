@@ -80,7 +80,6 @@ mod lobby {
             profile_pic_type: ProfilePicType,
             profile_pic_uri: felt252,
         ) -> Player {
-            // mint if you can
             let caller: ContractAddress = starknet::get_caller_address();
             // let minter_dispatcher: IMinterDispatcher = world.minter_dispatcher();
             // let token_id: u128 = minter_dispatcher.mint(caller, world.token_duelist_address());
@@ -261,27 +260,12 @@ mod lobby {
                 room_end: 0, // when room is closed
             };
 
-            let game_state = GameState {
-                game_id,
-                white: 0, //randomize this
-                turn: 0, // starts at one when game start
-                turn_color: 0, // 0:white, 1:black
-
-                w_turn_expiry_time: 0,
-                b_turn_expiry_time: 0,
-                w_total_time_left: game_format.total_time_per_side,
-                b_total_time_left: game_format.total_time_per_side,
-
-                game_start: 0,
-                game_end: 0,
-            };
-
             // set game room start
             //utils::set_pact(world, challenge);
             
             // create challenge
             //utils::set_challenge(world, challenge);
-            set!(world, (game, game_state)); // game manager?
+            set!(world, (game)); // game manager?
 
             (game_id)
         }

@@ -375,12 +375,24 @@
         "type": "core::integer::u16"
       },
       {
+        "name": "description",
+        "type": "core::felt252"
+      },
+      {
         "name": "turn_expiry",
         "type": "core::integer::u64"
       },
       {
         "name": "total_time_per_side",
         "type": "core::integer::u64"
+      },
+      {
+        "name": "total_time_string",
+        "type": "core::felt252"
+      },
+      {
+        "name": "increment",
+        "type": "core::integer::u8"
       }
     ]
   },

@@ -190,7 +190,7 @@ export const gameFormatconfig: GameFormatConfig  = {
 
     // Bullet 1-1
     19: {
-        name: "Bullet-1",
+        name: "Bullet-1-1",
         turn_expiry: 0,
         total_time_per_side: 60*1, // 1 min
         total_time_string: "1 min | 1s",
@@ -200,7 +200,7 @@ export const gameFormatconfig: GameFormatConfig  = {
 
     // Bullet 2-1
     20: {
-        name: "Bullet-2",
+        name: "Bullet-2-1",
         turn_expiry: 0,
         total_time_per_side: 60*2, // 2 min
         total_time_string: "2 mins | 1s",

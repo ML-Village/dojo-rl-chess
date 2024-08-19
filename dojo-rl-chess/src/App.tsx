@@ -12,7 +12,7 @@ function App() {
     const {
         setup: {
             systemCalls: { register_player, update_player, invite, reply_invite },
-            clientComponents: { Game, GameState, Player },
+            clientComponents: { Game, GameState, GameFormat, Player },
             toriiClient,
             contractComponents,
         },
@@ -41,6 +41,10 @@ function App() {
     // get current component values
     const player = useComponentValue(Player, entityId);
 
+    const hasGameFormats = useEntityQuery([Has(GameFormat)]);
+    console.log("hasGameFormats:")
+    console.log(hasGameFormats);
+
     // useEffect for invoking modal set in navbar
     // useEffect(() => {
     //     // if there is no player or account is not yet loaded
@@ -57,10 +61,12 @@ function App() {
         <div className="flex flex-col
         bg-blue-800/20 h-screen
         ">
-            <RegistrationModal />
-            <BaseNavbar />
+            
 
             <Router>
+                {/* <RegistrationModal /> */}
+                <BaseNavbar />
+
                 <Routes>
                     {/* Lobby Page */}
                     <Route path="/" element={<LobbyPage/>} />

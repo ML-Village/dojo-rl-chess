@@ -18,7 +18,7 @@ export function defineContractComponents(world: World) {
             return defineComponent(
                 world,
                 {
-                    game_id: RecsType.Number,
+                    game_id: RecsType.BigInt,
                     game_format_id: RecsType.Number,
                     room_owner_address: RecsType.BigInt,
                     invitee_address: RecsType.BigInt,
@@ -46,8 +46,11 @@ export function defineContractComponents(world: World) {
                 world,
                 {
                     game_format_id: RecsType.Number,
+                    description: RecsType.String,
                     turn_expiry:RecsType.Number,
                     total_time_per_side: RecsType.Number,
+                    total_time_string: RecsType.String,
+                    increment: RecsType.Number,
                 },
                 {
                     metadata: {

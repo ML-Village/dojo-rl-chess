@@ -1,4 +1,5 @@
 mod systems {
+    mod admin;
     mod lobby;
 }
 

@@ -1,0 +1,11 @@
+kind = "DojoContract"
+class_hash = "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e"
+original_class_hash = "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e"
+base_class_hash = "0x0"
+abi = "manifests/dev/base/abis/contracts/rl_chess_contracts-admin-264050f1.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+tag = "rl_chess_contracts-admin"
+manifest_name = "rl_chess_contracts-admin-264050f1"

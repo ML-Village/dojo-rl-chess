@@ -1,4 +1,7 @@
 import { BigNumberish } from 'starknet';
+import { getEntityIdFromKeys } from '@dojoengine/utils';
+import { Component, Entity, getComponentValue } from '@dojoengine/recs';
+export * from './gameModelUtils';
 
 export enum Direction {
     Left = 1,
@@ -76,3 +79,7 @@ export const formatTimestampDelta = (start: number, end: number): string => {
     if (days == 0) result += `:${seconds}`
     return result
 }
+
+export const bigintToEntity = (v: BigNumberish): Entity => (getEntityIdFromKeys([BigInt(v)]) as Entity)
+export const keysToEntity = (keys: BigNumberish[]): Entity => (getEntityIdFromKeys(keys.map(v => BigInt(v ?? 0))) as Entity)
+export const entityIdToKey = (component: Component, keyName: string, entityId: Entity) => (BigInt(getComponentValue(component, entityId)[keyName]))

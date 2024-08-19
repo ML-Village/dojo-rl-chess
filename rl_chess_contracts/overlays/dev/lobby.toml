@@ -5,3 +5,4 @@ writes = [
     "rl_chess_contracts-GameState",
     "rl_chess_contracts-Player",
 ]
+init_calldata = []

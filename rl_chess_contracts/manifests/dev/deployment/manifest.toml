@@ -23,9 +23,23 @@ manifest_name = "dojo-base"
 
 [[contracts]]
 kind = "DojoContract"
+address = "0x4e27bbbb91d74b5bdda813858e37ad3b1ccbf4e9f82e9a6c33523e291ef9b73"
+class_hash = "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e"
+original_class_hash = "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e"
+base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
+abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-admin-264050f1.json"
+reads = []
+writes = ["rl_chess_contracts-GameFormat"]
+computed = []
+init_calldata = []
+tag = "rl_chess_contracts-admin"
+manifest_name = "rl_chess_contracts-admin-264050f1"
+
+[[contracts]]
+kind = "DojoContract"
 address = "0x49eeb5cefd6336ffccfecd9bbf218158fb0f1740999ef5a07b5045991f6ac41"
-class_hash = "0x1a903be1ebb04883e8f8b6d7304176a45441005c1b03fc2a65a96c4731663c3"
-original_class_hash = "0x1a903be1ebb04883e8f8b6d7304176a45441005c1b03fc2a65a96c4731663c3"
+class_hash = "0x1d7081008b2053eba1da33cc5bbaa053c828ccad9c66aa8ab34cae127ee7c6d"
+original_class_hash = "0x1d7081008b2053eba1da33cc5bbaa053c828ccad9c66aa8ab34cae127ee7c6d"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-lobby-5515fed8.json"
 reads = []
@@ -100,8 +114,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x66b71d90ecb9f1e5e368a67cdb1a7e322343b2e90fd94f564cd2c8c1d6c188b"
-original_class_hash = "0x66b71d90ecb9f1e5e368a67cdb1a7e322343b2e90fd94f564cd2c8c1d6c188b"
+class_hash = "0x77b1fde203add2f3be20d09c4edff53936c575cb04f60ac7470be12a2bcc909"
+original_class_hash = "0x77b1fde203add2f3be20d09c4edff53936c575cb04f60ac7470be12a2bcc909"
 abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-GameFormat-1a210de8.json"
 tag = "rl_chess_contracts-GameFormat"
 manifest_name = "rl_chess_contracts-GameFormat-1a210de8"
@@ -112,6 +126,11 @@ type = "u16"
 key = true
 
 [[models.members]]
+name = "description"
+type = "felt252"
+key = false
+
+[[models.members]]
 name = "turn_expiry"
 type = "u64"
 key = false
@@ -119,6 +138,16 @@ key = false
 [[models.members]]
 name = "total_time_per_side"
 type = "u64"
+key = false
+
+[[models.members]]
+name = "total_time_string"
+type = "felt252"
+key = false
+
+[[models.members]]
+name = "increment"
+type = "u8"
 key = false
 
 [[models]]
