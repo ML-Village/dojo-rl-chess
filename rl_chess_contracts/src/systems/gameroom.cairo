@@ -7,12 +7,12 @@ use rl_chess_contracts::models::games::{Game, GameFormat, GameState, InviteState
 // define the interface
 #[dojo::interface]
 trait IGameRoom<TContractState> {
-    fn start_game(ref world: IWorldDispatcher, game_id: u128) -> bool;
+    fn start_game(ref world: IWorldDispatcher, game_id: u128);
     fn make_move(ref world: IWorldDispatcher, game_id: u128, 
         from_x: u8, from_y: u8, 
         to_x: u8, to_y: u8,
         promotion_choice: Piece
-    ) -> bool;
+    );
 
     // todo: offer draw
     fn resign(ref world: IWorldDispatcher, game_id: u128) -> bool;
@@ -43,6 +43,7 @@ mod gameroom {
     use rl_chess_contracts::libs::utils;
     use rl_chess_contracts::utils::timestamp::{timestamp};
     use rl_chess_contracts::utils::short_string::{ShortStringTrait};
+    use rl_chess_contracts::utils::math::{MathU8};
 
     mod Errors {
         const PLAYER_NOT_INGAME: felt252 = 'RL_CHESS: Caller not in game';
@@ -67,7 +68,7 @@ mod gameroom {
         // startgame
         fn start_game(ref world: IWorldDispatcher, 
             game_id: u128,
-        ) -> bool {
+        ) {
             let caller: ContractAddress = starknet::get_caller_address();
 
             // get the game
@@ -102,7 +103,8 @@ mod gameroom {
                 en_passant_target_y: 88, // 88 for none
             };
 
-            
+            // initate all board squares by looping through 8x8 models
+            // note: setting model on 64 squares
             let mut y: u8 = 0;
             loop{
                 if(y == 8) { break; }
@@ -115,6 +117,7 @@ mod gameroom {
                     // else None
                     let piece:Piece = match y {
                         0 => {
+                            // if white first row
                             match x {
                                 0 => Piece { piece_type: PieceType::Rook, color: Color::White },
                                 1 => Piece { piece_type: PieceType::Knight, color: Color::White },
@@ -127,6 +130,7 @@ mod gameroom {
                                 _ => Piece { piece_type: PieceType::None, color: Color::None }
                             }
                         },
+                            // white pawn rows
                         1 => {
                             match x {
                                 0 => Piece { piece_type: PieceType::Pawn, color: Color::White },
@@ -140,6 +144,7 @@ mod gameroom {
                                 _ => Piece { piece_type: PieceType::None, color: Color::None }
                             }
                         },
+                            // black pawn rows
                         6 => {
                             match x {
                                 0 => Piece { piece_type: PieceType::Pawn, color: Color::Black },
@@ -153,6 +158,7 @@ mod gameroom {
                                 _ => Piece { piece_type: PieceType::None, color: Color::None }
                             }
                         },
+                            // black first row
                         7 => {
                             match x {
                                 0 => Piece { piece_type: PieceType::Rook, color: Color::Black },
@@ -183,6 +189,7 @@ mod gameroom {
                 y+=1;
             }   
             
+            // set game state after board squares initiated
             set!(world, (gamestate));
 
             true
@@ -194,15 +201,9 @@ mod gameroom {
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8,
             promotion_choice: Piece
-        ) -> bool {
+        ){
             let caller: ContractAddress = starknet::get_caller_address();
-
-            // get the game
-            let game: Game = get!(world, (game_id), Game);
-            let gameformat: GameFormat = get!(world, (game.game_format_id), GameFormat);
-            let mut gamesquares_from: GameSquares = get!(world, (game_id, from_x, from_y), GameSquares);
-            let mut gamesquares_to: GameSquares = get!(world, (game_id, to_x, to_y), GameSquares);
-
+            
             let owner: ContractAddress = game.room_owner_address;
             let invitee: ContractAddress = game.invitee_address;
 
@@ -210,8 +211,17 @@ mod gameroom {
             assert(caller == owner || caller == invitee, Errors::INVALID_PLAYER);
 
             // check if move is valid
-            let is_valid_move: bool = self._is_valid_move(world, game_id, from_x, from_y, to_x, to_y);
+            let is_valid_move: bool = self.is_valid_move(game_id, from_x, from_y, to_x, to_y);
             assert(is_valid_move, Errors::INVALID_MOVE);
+
+            // get the game configs
+            let game: Game = get!(world, (game_id), Game);
+            let gameformat: GameFormat = get!(world, (game.game_format_id), GameFormat);
+
+            // get game board / squares
+            let mut gamesquares_from: GameSquares = get!(world, (game_id, from_x, from_y), GameSquares);
+            let gamesquares_from_piece: Piece = gamesquares_from.piece.clone();
+            let mut gamesquares_to: GameSquares = get!(world, (game_id, to_x, to_y), GameSquares);
 
             // 0. === get gamestate vars and init ===
             let mut gamestate: GameState = get!(world, (game_id), GameState);
@@ -222,6 +232,7 @@ mod gameroom {
 
             // 1. == update gamesquares since move is valid ==
 
+            // idea is to update the To and From squares and leave the other squares to special moves handle
             gamesquares_to.piece = gamesquares_from.piece;
             gamesquares_from.piece = Piece { piece_type: PieceType::None, color: Color::None };
             
@@ -229,7 +240,7 @@ mod gameroom {
             set!(world, (gamesquares_to));
 
             // 2. == handle special moves ==
-            self._handle_special_moves(game_id, from_x, from_y, to_x, to_y, gamesquares_from.piece, promotion_choice);
+            self._handle_special_moves(game_id, from_x, from_y, to_x, to_y, gamesquares_from_piece, promotion_choice);
 
             // check for en passant or castle and get squares for that
             let is_en_passant: bool = self._is_en_passant_flagging(world, game_id, from_x, from_y, to_x, to_y);
@@ -310,54 +321,72 @@ mod gameroom {
     // #[abi(embed_v0)] // commented to make this private
     #[generate_trait]
     impl GameRoomInternalImpl of IGameRoomInternalTrait {
+        fn _target_is_friendly(self: @ContractState, 
+            game_id:u128,
+            from_x: u8, from_y: u8, 
+            to_x: u8, to_y: u8
+            )-> bool {
+                let from_piece = get!(self.world(), (game_id, from_x, from_y), 
+                    GameSquares).piece;
+                let target_piece = get!(self.world(), (game_id, to_x, to_y), 
+                    GameSquares).piece;
+                from_piece.color == target_piece.color
+        }
+        
         fn _is_valid_pawn_move(self: @ContractState, 
             game_id:u128,
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8,
             color: Color
             )-> bool {
-                let direction = if (color == Color::White) { 1 } else {-1};
+                let direction: i8 = if (color == Color::White) { 1 } else {-1};
                 let start_rank = if (color == Color::White) { 1 } else {6};
 
                 let target_square_is_empty:bool = get!(
                     self.world(), (game_id, to_x, to_y), 
                     GameSquares).piece.piece_type == PieceType::None;
                 
-                // pawn cannot end up in non-empty square
-                assert(target_square_is_empty, Errors::INVALID_MOVE);
-
                 // check if it is regular move
-                if from_x == to_x && to_y == from_y + direction && 
+                if (from_x == to_x) && 
+                (to_y.try_into().unwrap()) == (from_y.try_into().unwrap() + direction) && 
                     target_square_is_empty {
                         return true;
                 }
                 
                 // First move - 2 squares
-                if from_x == to_x && to_y == from_y + 2*direction 
-                    && target_square_is_empty {
+                // todo: check if path is blocked
+                if (from_x == to_x) && 
+                    (from_y == start_rank) && 
+                    (to_y.try_into().unwrap() == from_y.try_into().unwrap() + 2*direction) 
+                    && (target_square_is_empty) {
                         return true;
                 }
 
                 // check if it is a capture move by checking if x shift 1
                 // and y shift 1 in the direction of the pawn
-                if (to_x == from_x + 1 || to_x == from_x - 1) &&
-                    to_y == from_y + direction {
-
+                if (to_x == from_x + 1 || to_x.try_into().unwrap() == from_x.try_into().unwrap() - 1) &&
+                    (to_y.try_into().unwrap() == from_y.try_into().unwrap() + direction) 
+                    && !target_square_is_empty {
+                        return true;
+                    
+                    let from_piece = get!(self.world(), (game_id, from_x, from_y),
+                        GameSquares).piece;
                     let target_piece = get!(self.world(), (game_id, to_x, to_y), 
                         GameSquares).piece;
-
-                    if target_piece.piece_type == PieceType::Pawn {
-                        return target_piece.color != color;
+                    
+                    // if regular capture
+                    // check if target is enemy color (non-empty check already done above)
+                    if from_piece.color != target_piece.color {
+                        return true;
                     }
 
                     // if en passant
-                    return (target_piece.piece_type == PieceType::None) &&
+                    return (target_square_is_empty) &&
                         (to_y == self.en_passant_target_y) &&
                         (to_x == self.en_passant_target_x);
                 }
 
                 false
-
         }
 
         fn _is_valid_rook_move(self: @ContractState, 
@@ -366,8 +395,14 @@ mod gameroom {
             to_x: u8, to_y: u8
             )-> bool {
             
-            // check if the move is either horizontal or vertical
-            if from_x != to_x && from_y != to_y {
+            //if target is friendly
+            if self._target_is_friendly(game_id, from_x, from_y, to_x, to_y) {
+                return false;
+            }
+
+            // check if the move is neither horizontal or vertical
+            if ((from_x != to_x) && (from_y != to_y))
+            {
                 return false;
             }
 
@@ -379,20 +414,20 @@ mod gameroom {
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8
             )-> bool {
-                let dx = (to_x - from_x).signum();
-                let dy = (to_y - from_y).signum();
+                let dx:i8 = MathU8::signum((to_x.try_into().unwrap() - from_x.try_into().unwrap()));
+                let dy:i8 = MathU8::signum((to_y - from_y));
 
-                let mut x = from_x + dx;
-                let mut y = from_y + dy;
+                let mut x:i8 = from_x.try_into().unwrap()+ dx;
+                let mut y:i8 = from_y.try_into().unwrap()+ dy;
 
                 loop
                 {
-                    if x == to_x && y == to_y {
+                    if x == to_x.try_into().unwrap() && y == to_y.try_into().unwrap() {
                         break;
                     }
 
                     if get!(self.world(), 
-                        (game_id, x, y), GameSquares).piece.piece_type != PieceType::None {
+                        (game_id, x.try_into().unwrap(), y.try_into().unwrap()), GameSquares).piece.piece_type != PieceType::None {
                         return false;
                     }
                     x += dx;
@@ -406,9 +441,14 @@ mod gameroom {
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8
             )-> bool {
-                
-                let dx = (to_x - from_x).abs();
-                let dy = (to_y - from_y).abs();
+
+                // check if target is friendly
+                if self._target_is_friendly(game_id, from_x, from_y, to_x, to_y) {
+                    return false;
+                }
+
+                let dx = MathU8::abs((to_x - from_x));
+                let dy = MathU8::abs((to_y - from_y));
 
                 // A valid knight move is either:
                 // 1. Two squares horizontally and one square vertically
@@ -421,9 +461,15 @@ mod gameroom {
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8
             )-> bool {
+
+                // check if target is friendly
+                if self._target_is_friendly(game_id, from_x, from_y, to_x, to_y) {
+                    return false;
+                }
+
                 // Calculate the absolute difference between the x and y coordinates
-                let dx = (to_x - from_x).abs(); 
-                let dy = (to_y - from_y).abs();
+                let dx = MathU8::abs((to_x - from_x)); 
+                let dy = MathU8::abs((to_y - from_y));
 
                 // For a valid diagonal move, dx should equal dy
                 if dx != dy {
@@ -439,6 +485,7 @@ mod gameroom {
             to_x: u8, to_y: u8
             )-> bool {
                 // A queen's move is valid if it's either a valid rook move or a valid bishop move
+                // these 2 funcs already checked if target is friendly
                 self._is_valid_rook_move(game_id, from_x, from_y, to_x, to_y) ||
                     self._is_valid_bishop_move(game_id, from_x, from_y, to_x, to_y)
         }
@@ -448,9 +495,17 @@ mod gameroom {
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8
             )-> bool {
+                
+                // check if target is friendly
+                if self._target_is_friendly(game_id, from_x, from_y, to_x, to_y) {
+                    return false;
+                }
+
                 // Calculate the absolute difference between the x and y coordinates
-                let dx = (to_x - from_x).abs();
-                let dy = (to_y - from_y).abs();
+                let dx = MathU8::abs((to_x.try_into().unwrap() - from_x.try_into().unwrap()
+                            ).try_into().unwrap());
+                let dy = MathU8::abs((to_y.try_into().unwrap() - from_y.try_into().unwrap()
+                            ).try_into().unwrap());
 
                 // Regular king move: one square in any direction
                 if dx <= 1 && dy <= 1 {
@@ -485,14 +540,26 @@ mod gameroom {
                 }
         }
 
-        fn _is_en_passant_flagging(self: @ContractState, 
+
+        // only checks if it is en passant capture
+        fn _is_en_passant_capture(self: @ContractState, 
             game_id:u128,
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8
             )-> bool {
-                true
+                let from_piece = get!(self.world(), (game_id, from_x, from_y), 
+                    GameSquares).piece;
+                let target_square_is_empty:bool = get!(
+                    self.world(), (game_id, to_x, to_y), 
+                    GameSquares).piece.piece_type == PieceType::None;
+                
+                return (from_piece.piece_type == PieceType::Pawn) &&
+                        (target_square_is_empty) &&
+                        (to_y == self.en_passant_target_y) &&
+                        (to_x == self.en_passant_target_x);
+                
+                false
         }
-
 
         // removes en passant target pawn
         fn _handle_en_passant(self: @ContractState, 
@@ -501,35 +568,39 @@ mod gameroom {
             to_x: u8, to_y: u8
             ){
             // assuming en passant is valid
+            // assuming from square is pawn
 
-            // remove the pawn
-            let mut gamestate: GameState = get!(self.world(), (game_id), GameState);
-            let mut gamesquares_from: GameSquares = get!(
-                self.world(), (game_id, from_x, from_y), 
-                GameSquares);
-            let from_piece: Piece = gamesquares_from.piece;
+            // remove the captured pawn
+            // let mut gamesquares_from: GameSquares = get!(
+            //     self.world(), (game_id, from_x, from_y), 
+            //     GameSquares);
+            // let from_piece: Piece = gamesquares_from.piece;
 
             let mut gamesquares_to: GameSquares = get!(
                 self.world(), (game_id, to_x, to_y), 
                 GameSquares
             );
+            let mut gamestate: GameState = get!(self.world(), (game_id), GameState);
             
+            // if the target square is en passant target
             if gamestate.en_passant_target_x == to_x && 
                 gamestate.en_passant_target_y == to_y {
-                    // remove the pawn
-                    //let captured_pawn_delta: u8 = if from_piece.color == Color::White { 1 } else { -1 };
+                    // remove the captured pawn
+                    let captured_pawn_delta: i8 = if gamestate.turn_color == Color::White { to_y.try_into().unwrap() - 1 } else { to_y.try_into().unwrap() + 1 };
                     let mut captured_pawn: GameSquares = get!(
-                        self.world(), (game_id, to_x, from_y), 
+                        self.world(), (
+                            game_id, to_x, captured_pawn_delta.try_into().unwrap()
+                        ), 
                         GameSquares);
                     captured_pawn.piece = Piece { piece_type: PieceType::None, color: Color::None };
-                    set!(self.world(), (captured_pawn));
+                    set!(self.world(), (captured_pawn), GameSquares);
             }
 
             // update en passant target if its a two square target
             // (assuming valid move)
-            if to_y == from_y + 2 || to_y == from_y - 2 {
+            if MathU8::abs((from_y - to_y).try_into().unwrap()) == 2 {
                 gamestate.en_passant_target_x = to_x;
-                gamestate.en_passant_target_y = (to_y + from_y) / 2;
+                gamestate.en_passant_target_y = (from_y + to_y) / 2;
             } else {
                 gamestate.en_passant_target_x = 88;
                 gamestate.en_passant_target_y = 88;
@@ -551,17 +622,22 @@ mod gameroom {
                 from_x: u8, from_y: u8, 
                 to_x: u8, to_y: u8,
                 promotion_choice: Piece
-            ){
+            ){  
+                // assuming already checked for from piece type as Pawn
+
                 assert(promotion_choice.piece_type != PieceType::None, Errors::INVALID_MOVE);
                 assert(promotion_choice.piece_type != PieceType::Pawn, Errors::INVALID_MOVE);
+                // check that to square is last rank
+                assert(to_y == 0 || to_y == 7, Errors::INVALID_MOVE);
+                
                 // assuming pawn promotion is valid
                 let mut gamesquares_to: GameSquares = get!(
                     self.world(), (game_id, to_x, to_y), 
-                    GameSquares
-                );
+                    GameSquares);
                 
-                // todo: check if color is correct
-                gamesquares_to.piece.piece_type = promotion_choice.piece_type;
+                // assumes promotion color is aligned
+
+                gamesquares_to.piece = promotion_choice;
                 set!(self.world(), (gamesquares_to));
         }
 
@@ -573,18 +649,30 @@ mod gameroom {
             piece: Piece,
             promotion_choice: Piece
             )-> bool {
+
+                // note: these must not use from square model
                 match piece.piece_type {
                     PieceType::Pawn => {
-                        if self._is_pawn_promotion(game_id, from_x, from_y, to_x, to_y) {
-                            self._handle_pawn_promotion(game_id, from_x, from_y, to_x, to_y, promotion_choice);
-                        };
-                        is self._is_en_passant_flagging(game_id, from_x, from_y, to_x, to_y) {
-                            self._handle_en_passant(game_id, from_x, from_y, to_x, to_y);
-                        };
+                        // removes en passant target pawn
+                        // updates: en passant target state (gamestate) if its 2 square move
+                        self._handle_en_passant(game_id, from_x, from_y, to_x, to_y);
+                        
+                        // checks if it is last rank target
+                        // capture should have been handled in main move (target square overwritten)
+                        // updates: target square updated to promotion_choice
+                        self._handle_pawn_promotion(game_id, from_x, from_y, to_x, to_y, promotion_choice);
+
+                        // if self._is_pawn_promotion(game_id, from_x, from_y, to_x, to_y) {
+                        // };
+                        // if self._is_en_passant(game_id, from_x, from_y, to_x, to_y) {
+                            
+                        // };
                     },
                     PieceType::King => {
                         if self._is_castle_move(game_id, from_x, from_y, to_x, to_y) {
-                            // updates gamestate castling booleans
+                            // does not update king position as that is done in the main move
+                            // updates: rook position
+                            // updates: gamestate castling booleans
                             self._handle_castling(game_id, from_x, from_y, to_x, to_y);
                         };
                     },
@@ -598,9 +686,11 @@ mod gameroom {
             from_x: u8, from_y: u8, 
             to_x: u8, to_y: u8
             )-> bool {
-                (from_x - to_x).abs() == 2
+                MathU8::abs((from_x.try_into().unwrap() - to_x.try_into().unwrap()
+                    ).try_into().unwrap()) == 2
         }
 
+        // note: does not need from_square model
         fn  _handle_castling(self: @ContractState, 
             game_id:u128,
             from_x: u8, from_y: u8, 
@@ -608,12 +698,7 @@ mod gameroom {
             ){
              // assuming castle is valid
 
-             // update castling rights
             let mut gamestate: GameState = get!(self.world(), (game_id), GameState);
-            let mut gamesquares_from: GameSquares = get!(
-                self.world(), (game_id, from_x, from_y), 
-                GameSquares);
-            let from_piece: Piece = gamesquares_from.piece;
             
             let rook_from_x = if to_x > from_x { 7 } else { 0 };
             let rook_to_x = if to_x > from_x { from_x + 1 } else { from_x - 1 };
@@ -631,16 +716,15 @@ mod gameroom {
 
             set!(self.world(), (gamesquares_rook_from, gamesquares_rook_to));
                 
-
-            if from_piece.piece_type == PieceType::King {
-                if from_piece.color == Color::White {
-                    gamestate.whitekingside = false;
-                    gamestate.whitequeenside = false;
-                } else {
-                    gamestate.blackkingside = false;
-                    gamestate.blackqueenside = false;
-                }
+            // update castling rights
+            if gamestate.turn_color == Color::White {
+                gamestate.whitekingside = false;
+                gamestate.whitequeenside = false;
+            } else {
+                gamestate.blackkingside = false;
+                gamestate.blackqueenside = false;
             }
+            
             set!(self.world(), (gamestate));   
         }
 
@@ -650,14 +734,6 @@ mod gameroom {
             to_x: u8, to_y: u8
             )-> (bool, bool, bool, bool) {
                (true, true, true, true)
-        }
-
-        fn _update_en_passant_target(self: @ContractState, 
-            game_id:u128,
-            from_x: u8, from_y: u8, 
-            to_x: u8, to_y: u8
-            )-> (u8, u8) {
-                (88, 88)
         }
 
     }

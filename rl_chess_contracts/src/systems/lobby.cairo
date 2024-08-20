@@ -174,27 +174,28 @@ mod lobby {
                 room_end: 0, // when room is closed
             };
 
-            let game_state = GameState {
-                game_id,
-                white: 0, //randomize this
-                turn: 0, // starts at one when game start
-                turn_color: 0, // 0:white, 1:black
+            // let game_state = GameState {
+            //     game_id,
+            //     white: 0, //randomize this
+            //     turn: 0, // starts at one when game start
+            //     turn_color: 0, // 0:white, 1:black
 
-                w_turn_expiry_time: 0,
-                b_turn_expiry_time: 0,
-                w_total_time_left: game_format.total_time_per_side,
-                b_total_time_left: game_format.total_time_per_side,
+            //     w_turn_expiry_time: 0,
+            //     b_turn_expiry_time: 0,
+            //     w_total_time_left: game_format.total_time_per_side,
+            //     b_total_time_left: game_format.total_time_per_side,
 
-                game_start: 0,
-                game_end: 0,
-            };
+            //     game_start: 0,
+            //     game_end: 0,
+            // };
 
             // set game room start
             //utils::set_pact(world, challenge);
             
             // create challenge
             //utils::set_challenge(world, challenge);
-            set!(world, (game, game_state)); // game manager?
+            set!(world, (game)); // game manager?
+            //set!(world, (game, game_state)); // game manager?
 
             (game_id)
         }
@@ -310,17 +311,4 @@ mod lobby {
         // DuelistTurnEvent: events::DuelistTurnEvent,
     }
 
-    // #[abi(embed_v0)] // commented to make this private
-    impl LobbyInternalImpl of super::ILobbyInternal<ContractState> {
-        // fn _emitDuelistRegisteredEvent(ref world: IWorldDispatcher, address: ContractAddress, duelist: Duelist, is_new: bool) {
-        //     emit!(world, (Event::DuelistRegisteredEvent(events::DuelistRegisteredEvent {
-        //         address,
-        //         duelist_id: duelist.duelist_id,
-        //         name: duelist.name,
-        //         profile_pic_type: duelist.profile_pic_type,
-        //         profile_pic_uri: duelist.profile_pic_uri,
-        //         is_new,
-        //     })));
-        // }
-    }
 }

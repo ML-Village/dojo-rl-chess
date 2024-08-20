@@ -106,7 +106,7 @@ enum InviteState {
 }
 
 
-#[derive(Copy, Clone, Serde, PartialEq, Introspect, Debug)]
+#[derive(Drop, Copy, Clone, PartialEq, Introspect, Serde, Debug)]
 enum PieceType {
     None,
     Pawn,
@@ -117,14 +117,14 @@ enum PieceType {
     King,
 }
 
-#[derive(Copy, Clone, PartialEq, Introspect, Debug)]
+#[derive(Drop, Copy, Clone, PartialEq, Introspect, Serde, Debug)]
 pub enum Color {
     None,
     White,
     Black,
 }
 
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Drop, Copy, PartialEq, Introspect, Serde, Debug)]
 struct Piece {
     color: Color,
     piece_type: PieceType,

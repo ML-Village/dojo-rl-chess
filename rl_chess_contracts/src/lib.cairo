@@ -14,6 +14,7 @@ mod libs {
 }
 
 mod utils {
+    mod math;
     mod bitwise;
     mod hash;
     mod timestamp;

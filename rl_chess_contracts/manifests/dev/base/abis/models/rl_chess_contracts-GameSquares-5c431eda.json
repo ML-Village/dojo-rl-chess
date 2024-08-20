@@ -363,8 +363,8 @@
   },
   {
     "type": "impl",
-    "name": "game_stateImpl",
-    "interface_name": "rl_chess_contracts::models::games::Igame_state"
+    "name": "game_squaresImpl",
+    "interface_name": "rl_chess_contracts::models::games::Igame_squares"
   },
   {
     "type": "enum",
@@ -386,99 +386,77 @@
   },
   {
     "type": "enum",
-    "name": "core::bool",
+    "name": "rl_chess_contracts::models::games::PieceType",
     "variants": [
       {
-        "name": "False",
+        "name": "None",
         "type": "()"
       },
       {
-        "name": "True",
+        "name": "Pawn",
+        "type": "()"
+      },
+      {
+        "name": "Knight",
+        "type": "()"
+      },
+      {
+        "name": "Bishop",
+        "type": "()"
+      },
+      {
+        "name": "Rook",
+        "type": "()"
+      },
+      {
+        "name": "Queen",
+        "type": "()"
+      },
+      {
+        "name": "King",
         "type": "()"
       }
     ]
   },
   {
     "type": "struct",
-    "name": "rl_chess_contracts::models::games::GameState",
+    "name": "rl_chess_contracts::models::games::Piece",
+    "members": [
+      {
+        "name": "color",
+        "type": "rl_chess_contracts::models::games::Color"
+      },
+      {
+        "name": "piece_type",
+        "type": "rl_chess_contracts::models::games::PieceType"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "rl_chess_contracts::models::games::GameSquares",
     "members": [
       {
         "name": "game_id",
         "type": "core::integer::u128"
       },
       {
-        "name": "white",
+        "name": "y",
         "type": "core::integer::u8"
       },
       {
-        "name": "turn",
-        "type": "core::integer::u32"
-      },
-      {
-        "name": "turn_color",
-        "type": "rl_chess_contracts::models::games::Color"
-      },
-      {
-        "name": "w_turn_expiry_time",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "b_turn_expiry_time",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "w_total_time_left",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "b_total_time_left",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "game_start",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "last_move_time",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "game_end",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "whitekingside",
-        "type": "core::bool"
-      },
-      {
-        "name": "whitequeenside",
-        "type": "core::bool"
-      },
-      {
-        "name": "blackkingside",
-        "type": "core::bool"
-      },
-      {
-        "name": "blackqueenside",
-        "type": "core::bool"
-      },
-      {
-        "name": "halfmove_clock",
-        "type": "core::integer::u16"
-      },
-      {
-        "name": "en_passant_target_x",
+        "name": "x",
         "type": "core::integer::u8"
       },
       {
-        "name": "en_passant_target_y",
-        "type": "core::integer::u8"
+        "name": "piece",
+        "type": "rl_chess_contracts::models::games::Piece"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "rl_chess_contracts::models::games::Igame_state",
+    "name": "rl_chess_contracts::models::games::Igame_squares",
     "items": [
       {
         "type": "function",
@@ -486,7 +464,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "rl_chess_contracts::models::games::GameState"
+            "type": "rl_chess_contracts::models::games::GameSquares"
           }
         ],
         "outputs": [],
@@ -496,7 +474,7 @@
   },
   {
     "type": "event",
-    "name": "rl_chess_contracts::models::games::game_state::Event",
+    "name": "rl_chess_contracts::models::games::game_squares::Event",
     "kind": "enum",
     "variants": []
   }

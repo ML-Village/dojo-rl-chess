@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d"
-original_class_hash = "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d"
+class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
+original_class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
 abi = "manifests/dev/base/abis/models/rl_chess_contracts-GameState-28b58a4f.json"
 tag = "rl_chess_contracts-GameState"
 manifest_name = "rl_chess_contracts-GameState-28b58a4f"
@@ -22,7 +22,7 @@ key = false
 
 [[members]]
 name = "turn_color"
-type = "u8"
+type = "Color"
 key = false
 
 [[members]]
@@ -51,6 +51,46 @@ type = "u64"
 key = false
 
 [[members]]
+name = "last_move_time"
+type = "u64"
+key = false
+
+[[members]]
 name = "game_end"
 type = "u64"
+key = false
+
+[[members]]
+name = "whitekingside"
+type = "bool"
+key = false
+
+[[members]]
+name = "whitequeenside"
+type = "bool"
+key = false
+
+[[members]]
+name = "blackkingside"
+type = "bool"
+key = false
+
+[[members]]
+name = "blackqueenside"
+type = "bool"
+key = false
+
+[[members]]
+name = "halfmove_clock"
+type = "u16"
+key = false
+
+[[members]]
+name = "en_passant_target_x"
+type = "u8"
+key = false
+
+[[members]]
+name = "en_passant_target_y"
+type = "u8"
 key = false

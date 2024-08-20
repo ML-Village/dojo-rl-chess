@@ -1,0 +1,26 @@
+kind = "DojoModel"
+class_hash = "0x4a89caa32082fec7e12fc25ebeac93eee67b117b871d51bb7ff07fdc04eae04"
+original_class_hash = "0x4a89caa32082fec7e12fc25ebeac93eee67b117b871d51bb7ff07fdc04eae04"
+abi = "manifests/dev/base/abis/models/rl_chess_contracts-GameSquares-5c431eda.json"
+tag = "rl_chess_contracts-GameSquares"
+manifest_name = "rl_chess_contracts-GameSquares-5c431eda"
+
+[[members]]
+name = "game_id"
+type = "u128"
+key = true
+
+[[members]]
+name = "y"
+type = "u8"
+key = true
+
+[[members]]
+name = "x"
+type = "u8"
+key = true
+
+[[members]]
+name = "piece"
+type = "Piece"
+key = false
