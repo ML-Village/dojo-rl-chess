@@ -35,6 +35,13 @@ function App() {
         },
     ]);
 
+    // const hasPlayers = useEntityQuery([Has(Player)]);
+    // console.log("App.tsx:hasPlayers: ", hasPlayers)
+    // const hasGames = useEntityQuery([Has(Game)]);
+    // console.log("App.tsx: hasGames: ", hasGames)
+    // const hasGameFormats = useEntityQuery([Has(GameFormat)]);
+    // console.log("App.tsx: hasGameFormats: ", hasGameFormats)
+
 
 
     return (

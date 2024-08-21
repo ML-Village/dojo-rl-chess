@@ -1845,6 +1845,7 @@
         "rl_chess_contracts-Game",
         "rl_chess_contracts-GameFormat",
         "rl_chess_contracts-GameState",
+        "rl_chess_contracts-GameSquares",
         "rl_chess_contracts-Player"
       ],
       "computed": [],
@@ -1855,8 +1856,8 @@
     {
       "kind": "DojoContract",
       "address": "0x49eeb5cefd6336ffccfecd9bbf218158fb0f1740999ef5a07b5045991f6ac41",
-      "class_hash": "0x3aa520c5100723d435d9a6ba94b8fe39582b60b1dc9e8922b77a541f9ccb25f",
-      "original_class_hash": "0x3aa520c5100723d435d9a6ba94b8fe39582b60b1dc9e8922b77a541f9ccb25f",
+      "class_hash": "0x5d6c9260b98ce033ba0b6c6670a4b20d5b1dc8b66baa52e2f912e8f413af658",
+      "original_class_hash": "0x5d6c9260b98ce033ba0b6c6670a4b20d5b1dc8b66baa52e2f912e8f413af658",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {

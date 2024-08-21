@@ -4,6 +4,8 @@ import { LobbyControls, LobbyTable, LobbyEvents } from "@/components";
 export const LobbyPage = () => {
     return (
         <div>
+
+            {/* CreateGame Play a Friend Button */}
             <LobbyControls/>
 
             <div className="
@@ -15,7 +17,9 @@ export const LobbyPage = () => {
 
                 ">
                     <LobbyTable />
-                    <LobbyEvents />
+
+                    {/* Right Side of Lobby that features a top game */}
+                    {/* <LobbyEvents /> */}
                 </div>
             </div>
         </div>

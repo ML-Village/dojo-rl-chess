@@ -13,7 +13,7 @@ import { ClientComponents } from "./createClientComponents";
 import { getEntityIdFromKeys, 
     getEvents,
     setComponentsFromEvents, } from "@dojoengine/utils";
-import type { IWorld } from "./generated/generated";
+import type { IWorld, ModelColor, PieceType } from "./generated/generated";
 import { ContractComponents } from "./generated/contractComponents";
 import { join } from "path";
 
@@ -25,6 +25,9 @@ export function createSystemCalls(
     { Game, GameFormat, GameState, Player  }: ClientComponents,
     world: World
 ) {
+
+    //======= Lobby System Calls =======//
+
     const register_player = async (account: AccountInterface, 
         name: string, profile_pic_type: number, profile_pic_uri: string,) => {
 
@@ -48,20 +51,6 @@ export function createSystemCalls(
                     })
                 )
             );
-            // Wait for the indexer to update the entity
-            // By doing this we keep the optimistic UI in sync with the actual state
-            // await new Promise<void>((resolve) => {
-            //     defineSystem(
-            //         world,
-            //         [
-            //             Has(Player),
-            //             HasValue(Player, { address: BigInt(account.address) }),
-            //         ],
-            //         () => {
-            //             resolve();
-            //         }
-            //     );
-            // });
         } catch (e) {
             console.log(e);
         } finally {
@@ -265,7 +254,73 @@ export function createSystemCalls(
             } finally {
                 console.log("Game Room Joined");
             }
-        };
+    };
+
+    //======= Game Room System Calls =======//
+    
+    const start_game  = async (account: AccountInterface,
+        game_id:number) => {
+
+            try {
+                const { transaction_hash } = await client.gameroom.start_game({
+                    account,
+                    game_id
+                });
+
+                console.log(
+                    await account.waitForTransaction(transaction_hash, {
+                        retryInterval: 100,
+                    })
+                );
+                setComponentsFromEvents(
+                    contractComponents,
+                    getEvents(
+                        await account.waitForTransaction(transaction_hash, {
+                        retryInterval: 100,
+                        })
+                    )
+                );
+    
+            } catch (e) {
+                console.log(e);
+            } finally {
+                console.log("Game Started at:", game_id);
+            }
+    };
+
+    const make_move = async (account: AccountInterface,
+        game_id:number, from_x:number, from_y:number, to_x:number, to_y:number, promotion_piece:{ color: ModelColor; piece_type: PieceType }) => {
+
+            try {
+                const { transaction_hash } = await client.gameroom.make_move({
+                    account,
+                    game_id,
+                    from_x, from_y,
+                    to_x, to_y,
+                    promotion_piece
+                });
+
+                console.log(
+                    await account.waitForTransaction(transaction_hash, {
+                        retryInterval: 100,
+                    })
+                );
+                setComponentsFromEvents(
+                    contractComponents,
+                    getEvents(
+                        await account.waitForTransaction(transaction_hash, {
+                        retryInterval: 100,
+                        })
+                    )
+                );
+    
+            } catch (e) {
+                console.log(e);
+            } finally {
+                console.log("Move Made");
+            }
+    }
+
 
     return {
         register_player,
@@ -274,5 +329,8 @@ export function createSystemCalls(
         reply_invite,
         create_game,
         join_game,
+
+        start_game, 
+        make_move,
     };
 }

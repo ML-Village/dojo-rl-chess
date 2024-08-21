@@ -1,4 +1,5 @@
 use starknet::ContractAddress;
+use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
@@ -128,4 +129,47 @@ pub enum Color {
 struct Piece {
     color: Color,
     piece_type: PieceType,
+}
+
+//----------------------------------
+// Manager
+//
+
+#[derive(Copy, Drop)]
+struct GameManager {
+    world: IWorldDispatcher,
+    //token_dispatcher: IERC721Dispatcher,
+}
+
+
+#[generate_trait]
+impl GameManagerTraitImpl of GameManagerTrait {
+    fn new(world: IWorldDispatcher) -> GameManager {
+        (GameManager { world })
+    }
+
+    // fn new_game(self: GameManager, game_id: u128, game_format_id:u16, room_owner_address: ContractAddress, invitee_address: ContractAddress, invite_expiry: u64) {
+    //     let game = Game {
+    //         game_id,
+    //         game_format_id,
+    //         room_owner_address,
+    //         invitee_address,
+    //         invite_state: InviteState::Awaiting,
+    //         invite_expiry,
+    //         result: 0,
+    //         winner: ContractAddress::zero(),
+    //         room_start: 0,
+    //         room_end: 0,
+    //     };
+    //     set!(self.world, (game));
+    // }
+
+    // to get the Player model via key
+    fn get(self: GameManager, game_id: u128) -> Game {
+        get!(self.world, (game_id), Game)
+    }
+
+    fn set(self: GameManager, game: Game) {
+        set!(self.world, (game));
+    }
 }

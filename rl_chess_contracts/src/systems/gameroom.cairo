@@ -72,7 +72,7 @@ mod gameroom {
             // check if caller is the owner or invitee
             assert(caller == owner || caller == invitee, Errors::PLAYER_NOT_INGAME);
 
-            // initialize gamestate
+            // re-initialize gamestate after side is fixed and gameRoom config confirmed
             let gamestate: GameState = GameState {
                 game_id: game_id,
                 white: 0, // owner is white

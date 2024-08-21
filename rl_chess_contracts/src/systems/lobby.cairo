@@ -54,7 +54,9 @@ mod lobby {
     use traits::{Into, TryInto};
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
 
-    use rl_chess_contracts::models::games::{Game, GameFormat, GameState, InviteState};
+    use rl_chess_contracts::models::games::{Game, GameFormat, GameState, InviteState,
+        Color, Piece, PieceType, GameSquares
+    };
     use rl_chess_contracts::models::players::{Player, ProfilePicType, PlayerManager, PlayerManagerTrait};
     use rl_chess_contracts::libs::seeder::{make_seed};
     use rl_chess_contracts::libs::utils;
@@ -262,11 +264,33 @@ mod lobby {
             };
 
             // set game room start
-            //utils::set_pact(world, challenge);
+
+            // rough initialize gamestate
+            let gamestate: GameState = GameState {
+                game_id: game_id,
+                white: 0, // owner is white
+                turn: 0,
+                turn_color: Color::White, // white
+                w_turn_expiry_time: game_format.turn_expiry,
+                b_turn_expiry_time: game_format.turn_expiry,
+                w_total_time_left: game_format.total_time_per_side,
+                b_total_time_left: game_format.total_time_per_side,
+                game_start: 0,
+                last_move_time: 0,
+                game_end: 0,
+                whitekingside: true,
+                whitequeenside: true,
+                blackkingside: true,
+                blackqueenside: true,
+                halfmove_clock: 0,
+                en_passant_target_x: 88, // 88 for none
+                en_passant_target_y: 88, // 88 for none
+            };
             
-            // create challenge
-            //utils::set_challenge(world, challenge);
-            set!(world, (game)); // game manager?
+            set!(world, (game));
+
+            // set game state after board squares initiated
+            set!(world, (gamestate));
 
             (game_id)
         }

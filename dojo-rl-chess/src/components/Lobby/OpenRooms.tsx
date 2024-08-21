@@ -38,26 +38,18 @@ export const OpenRooms = () => {
 
     const hasPlayers = useEntityQuery([Has(Player)]);
     const hasGames = useEntityQuery([Has(Game)]);
-    // const hasGameStates = useEntityQuery([Has(GameState)]);
-    // console.log("open games:")
-    // console.log(hasGames);
 
-    // const gamesStateData = hasGameStates.map((entity) => {
-    //     console.log("games state data entity:", entity)
-    //     return getComponentValueStrict(GameState, entity)
+    // const playersData = hasPlayers.map((entity) => {
+    //     const p = getComponentValueStrict(Player, entity)??{};
+    //     const generatedEntity = getEntityIdFromKeys([
+    //         p?.address?? BigInt("0x0"),
+    //     ]) as Entity;
+    //     return {
+    //         generated_entity: generatedEntity,
+    //         player_entity: entity??"0x0",
+    //         ...p
+    //         }
     // })
-
-    const playersData = hasPlayers.map((entity) => {
-        const p = getComponentValueStrict(Player, entity)??{};
-        const generatedEntity = getEntityIdFromKeys([
-            p?.address?? BigInt("0x0"),
-        ]) as Entity;
-        return {
-            generated_entity: generatedEntity,
-            player_entity: entity,
-            ...p
-            }
-    })
     const gamesData = hasGames.map((entity) => {
         //console.log("games data entity:", entity)
         const g = getComponentValueStrict(Game, entity)
@@ -70,8 +62,9 @@ export const OpenRooms = () => {
             ...g
         }
     })
+    console.log("OpenRoom: gamesData: ", gamesData)
 
-    const newGamesData = gamesData.filter((game) => {
+    const newGamesData = gamesData?.filter((game) => {
         return game?.invite_state == "Awaiting"
     }).map((game) => {
 
@@ -82,7 +75,6 @@ export const OpenRooms = () => {
         const player = getComponentValueStrict(Player, ownerEntity)??{}
         const playerName = feltToString(String(player?.name ?? ""));
         //const playerPfPnum = 
-
         return {
             ...game,
             game_format_id: game?.game_format_id,
@@ -95,20 +87,7 @@ export const OpenRooms = () => {
             room_start: formatTimestamp(game?.room_start),
         }
     })
-
-    // console.log("players data:")
-    // console.log(playersData);
-    // console.log("games data:")
-    // console.log(newGamesData);
-
-    // entity id we are syncing
-    // const entityId = getEntityIdFromKeys([
-    //     "217020874891062802932857737199262629888",
-    // ]) as Entity;
-    // const gameState = getComponentValueStrict(GameState, "217020874891062802932857737199262629888" as Entity)??{};
-    // console.log("game state:")
-    // console.log(gameState)
-
+    console.log("openrooms.tsx: newGamesData: ", newGamesData)
     return (
         <Table>
             <TableHeader >
@@ -129,9 +108,10 @@ export const OpenRooms = () => {
                         g?.profile_pic_uri.charCodeAt(0) :
                         JSON.stringify(g?.profile_pic_uri);
                         profilePicNum = (typeof(profilePicNum) === "number") ? profilePicNum : 0;
+                        console.log("openroom.tsx: profilePicNum: ", profilePicNum);
 
                     
-                    const GameFormatIcon = gameFormatconfig[g?.game_format_id]?.icon ?? FaChessBoard;
+                    const GameFormatIcon = gameFormatconfig[g?.game_format_id??1]?.icon ?? FaChessBoard;
 
                     const gameState = getComponentValueStrict(GameState, g?.game_entity)??{};
 
@@ -163,10 +143,10 @@ export const OpenRooms = () => {
                             <div className="flex justify-center items-center text-xl
                             py-1
                             ">
-                                <div className="border border-black rounded-full
+                                <div className={`border border-black rounded-full
                                 p-2.5 flex justify-center items-center
-                                bg-orange-100
-                                ">
+                                ${(gameState?.white ?? 0) == 0 ? "bg-lime-600":"bg-orange-100"}
+                                `}>
                             {
                                 (gameState?.white ?? 0) == 0 ? 
                                 <FaChessKnight className="text-white drop-shadow-lg

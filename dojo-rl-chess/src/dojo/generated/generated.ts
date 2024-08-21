@@ -1,8 +1,8 @@
 import { Account, AccountInterface } from "starknet";
 import { DojoProvider } from "@dojoengine/core";
+import { Color } from "chess.js";
 
 const NAMESPACE = "rl_chess_contracts";
-
 export interface IWorld {
     lobby: {
         register_player: (props: UpdatePlayerProps) => Promise<any>;
@@ -12,6 +12,10 @@ export interface IWorld {
         create_game: (props: {account: Account | AccountInterface, game_format_id:number}) => Promise<any>;
         join_game: (props: {account: Account | AccountInterface, game_id:number}) => Promise<any>;
     };
+    gameroom: {
+        start_game: (props: {account: Account | AccountInterface, game_id:number}) => Promise<any>;
+        make_move: (props: MakeMoveProps) => Promise<any>;        
+    }
 }
 
 export enum ProfilePicType {
@@ -38,6 +42,33 @@ export interface ReplyInviteProps {
     account: Account | AccountInterface;
     game_id: number,
     accepted: boolean;
+}
+
+// game room interfaces
+export enum ModelColor {
+    None = 0,
+    White = 1,
+    Black = 2,
+}
+
+export enum PieceType {
+    None = 0,
+    Pawn = 1,
+    Knight = 2,
+    Bishop = 3,
+    Rook = 4,
+    Queen = 5,
+    King = 6,
+}
+
+export interface MakeMoveProps {
+    account: Account | AccountInterface;
+    game_id: number;
+    from_x: number;
+    from_y: number;
+    to_x: number;
+    to_y: number;
+    promotion_piece: { color: ModelColor; piece_type: PieceType };
 }
 
 const handleError = (action: string, error: unknown) => {
@@ -143,10 +174,48 @@ export const setupWorld = async (provider: DojoProvider): Promise<IWorld> => {
             }
         },
 
-
     });
 
+    const gameroom = () => ({ 
+        start_game: async ({ account, game_id}: {account: Account | AccountInterface, game_id:number}) => {
+            try {
+                return await provider.execute(
+                    account,
+                    {
+                        contractName: "gameroom",
+                        entrypoint: "start_game",
+                        calldata: [game_id],
+                    },
+                    NAMESPACE
+                );
+            } catch (error) {
+                handleError("start_game", error);
+            }
+        },
+
+        make_move: async ({ account, game_id, from_x, from_y, to_x, to_y, promotion_piece}: MakeMoveProps) => {
+            try {
+                return await provider.execute(
+                    account,
+                    {
+                        contractName: "gameroom",
+                        entrypoint: "make_move",
+                        calldata: [game_id, 
+                            from_x, from_y, 
+                            to_x, to_y, 
+                            promotion_piece],
+                    },
+                    NAMESPACE
+                );
+            } catch (error) {
+                handleError("make_move", error);
+            }
+        },
+        
+    })
+
     return { 
-        lobby: lobby() 
+        lobby: lobby(),
+        gameroom: gameroom(),
     };
 };
