@@ -1,6 +1,7 @@
 mod systems {
     mod admin;
     mod lobby;
+    mod gameroom;
 }
 
 mod models {

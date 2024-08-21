@@ -24,8 +24,8 @@ manifest_name = "dojo-base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x4e27bbbb91d74b5bdda813858e37ad3b1ccbf4e9f82e9a6c33523e291ef9b73"
-class_hash = "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e"
-original_class_hash = "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e"
+class_hash = "0x61b33af9f66f58ee5d2b6f8e763aac42dc15bc5a996766813f01785a6c158a5"
+original_class_hash = "0x61b33af9f66f58ee5d2b6f8e763aac42dc15bc5a996766813f01785a6c158a5"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-admin-264050f1.json"
 reads = []
@@ -37,9 +37,23 @@ manifest_name = "rl_chess_contracts-admin-264050f1"
 
 [[contracts]]
 kind = "DojoContract"
+address = "0x56f90d3b9b83798f6125d8b3c348cd3651976f45c11b4369bc7cb78c53f8c8b"
+class_hash = "0xf33b8a5ee2be2b670aba64442042e0f766ddeaa13b9f1526ad642deb767783"
+original_class_hash = "0xf33b8a5ee2be2b670aba64442042e0f766ddeaa13b9f1526ad642deb767783"
+base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
+abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-gameroom-2640d291.json"
+reads = []
+writes = []
+computed = []
+init_calldata = []
+tag = "rl_chess_contracts-gameroom"
+manifest_name = "rl_chess_contracts-gameroom-2640d291"
+
+[[contracts]]
+kind = "DojoContract"
 address = "0x49eeb5cefd6336ffccfecd9bbf218158fb0f1740999ef5a07b5045991f6ac41"
-class_hash = "0x1d7081008b2053eba1da33cc5bbaa053c828ccad9c66aa8ab34cae127ee7c6d"
-original_class_hash = "0x1d7081008b2053eba1da33cc5bbaa053c828ccad9c66aa8ab34cae127ee7c6d"
+class_hash = "0x3aa520c5100723d435d9a6ba94b8fe39582b60b1dc9e8922b77a541f9ccb25f"
+original_class_hash = "0x3aa520c5100723d435d9a6ba94b8fe39582b60b1dc9e8922b77a541f9ccb25f"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-lobby-5515fed8.json"
 reads = []
@@ -152,8 +166,36 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d"
-original_class_hash = "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d"
+class_hash = "0x7d2490a0d4ff63d6cc602a92734f6543789a6fb826ac1924fad76c4a40cafbb"
+original_class_hash = "0x7d2490a0d4ff63d6cc602a92734f6543789a6fb826ac1924fad76c4a40cafbb"
+abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-GameSquares-5c431eda.json"
+tag = "rl_chess_contracts-GameSquares"
+manifest_name = "rl_chess_contracts-GameSquares-5c431eda"
+
+[[models.members]]
+name = "game_id"
+type = "u128"
+key = true
+
+[[models.members]]
+name = "x"
+type = "u8"
+key = true
+
+[[models.members]]
+name = "y"
+type = "u8"
+key = true
+
+[[models.members]]
+name = "piece"
+type = "Piece"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
+original_class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
 abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-GameState-28b58a4f.json"
 tag = "rl_chess_contracts-GameState"
 manifest_name = "rl_chess_contracts-GameState-28b58a4f"
@@ -175,7 +217,7 @@ key = false
 
 [[models.members]]
 name = "turn_color"
-type = "u8"
+type = "Color"
 key = false
 
 [[models.members]]
@@ -204,8 +246,48 @@ type = "u64"
 key = false
 
 [[models.members]]
+name = "last_move_time"
+type = "u64"
+key = false
+
+[[models.members]]
 name = "game_end"
 type = "u64"
+key = false
+
+[[models.members]]
+name = "whitekingside"
+type = "bool"
+key = false
+
+[[models.members]]
+name = "whitequeenside"
+type = "bool"
+key = false
+
+[[models.members]]
+name = "blackkingside"
+type = "bool"
+key = false
+
+[[models.members]]
+name = "blackqueenside"
+type = "bool"
+key = false
+
+[[models.members]]
+name = "halfmove_clock"
+type = "u16"
+key = false
+
+[[models.members]]
+name = "en_passant_target_x"
+type = "u8"
+key = false
+
+[[models.members]]
+name = "en_passant_target_y"
+type = "u8"
 key = false
 
 [[models]]

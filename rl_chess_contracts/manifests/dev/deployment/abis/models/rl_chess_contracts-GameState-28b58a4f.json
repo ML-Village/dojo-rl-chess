@@ -367,6 +367,38 @@
     "interface_name": "rl_chess_contracts::models::games::Igame_state"
   },
   {
+    "type": "enum",
+    "name": "rl_chess_contracts::models::games::Color",
+    "variants": [
+      {
+        "name": "None",
+        "type": "()"
+      },
+      {
+        "name": "White",
+        "type": "()"
+      },
+      {
+        "name": "Black",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "enum",
+    "name": "core::bool",
+    "variants": [
+      {
+        "name": "False",
+        "type": "()"
+      },
+      {
+        "name": "True",
+        "type": "()"
+      }
+    ]
+  },
+  {
     "type": "struct",
     "name": "rl_chess_contracts::models::games::GameState",
     "members": [
@@ -384,7 +416,7 @@
       },
       {
         "name": "turn_color",
-        "type": "core::integer::u8"
+        "type": "rl_chess_contracts::models::games::Color"
       },
       {
         "name": "w_turn_expiry_time",
@@ -407,8 +439,40 @@
         "type": "core::integer::u64"
       },
       {
+        "name": "last_move_time",
+        "type": "core::integer::u64"
+      },
+      {
         "name": "game_end",
         "type": "core::integer::u64"
+      },
+      {
+        "name": "whitekingside",
+        "type": "core::bool"
+      },
+      {
+        "name": "whitequeenside",
+        "type": "core::bool"
+      },
+      {
+        "name": "blackkingside",
+        "type": "core::bool"
+      },
+      {
+        "name": "blackqueenside",
+        "type": "core::bool"
+      },
+      {
+        "name": "halfmove_clock",
+        "type": "core::integer::u16"
+      },
+      {
+        "name": "en_passant_target_x",
+        "type": "core::integer::u8"
+      },
+      {
+        "name": "en_passant_target_y",
+        "type": "core::integer::u8"
       }
     ]
   },

@@ -55,7 +55,9 @@ export function defineContractComponents(world: World) {
                 {
                     metadata: {
                         name: "rl_chess_contracts-GameFormat",
-                        types: ["u16", "u64", "u64"],
+                        types: ["u16", "felt252", "u64", "u64",
+                            "felt252", "u8"
+                        ],
                         customTypes: [],
                     },
                 }
@@ -66,10 +68,10 @@ export function defineContractComponents(world: World) {
             return defineComponent(
                 world,
                 {
-                    game_id: RecsType.Number,
+                    game_id: RecsType.BigInt,
                     white:RecsType.Number,
                     turn: RecsType.Number,
-                    turn_color: RecsType.Number,
+                    turn_color: RecsType.String,
 
                     w_turn_expiry_time: RecsType.Number,
                     b_turn_expiry_time: RecsType.Number,
@@ -77,16 +79,51 @@ export function defineContractComponents(world: World) {
                     b_total_time_left: RecsType.Number, // Unix time, total game time (0 for unlimited)
                     
                     game_start: RecsType.Number, // Unix time, started
+                    last_move_time: RecsType.Number,
                     game_end: RecsType.Number, // Unix time, ended
+
+                    // castling rights
+                    whitekingside: RecsType.Boolean,
+                    whitequeenside: RecsType.Boolean,
+                    blackkingside: RecsType.Boolean,
+                    blackqueenside: RecsType.Boolean,
+
+                    // move tracker
+                    halfmove_clock: RecsType.Number,
+                    en_passant_target_x: RecsType.Number,
+                    en_passant_target_y: RecsType.Number,
+                    // fullmove_number: RecsType.Number,
+
                 },
                 {
                     metadata: {
                         name: "rl_chess_contracts-GameState",
-                        types: ["u128", "u8", "u32", "u8",
+                        types: ["u128", "u8", "u32", "enum",
                             "u64", "u64", "u64", "u64",
-                            "u64", "u64"
+                            "u64", "u64", "u64",
+                            "bool", "bool", "bool", "bool",
+                            "u16", "u8", "u8",
                         ],
-                        customTypes: [""],
+                        customTypes: ["Color"],
+                    },
+                }
+            );
+        })(),
+
+        GameSquares: (() => {
+            return defineComponent(
+                world,
+                {
+                    game_id: RecsType.BigInt,
+                    y: RecsType.Number,
+                    x: RecsType.Number,
+                    piece: { color: RecsType.String, piece_type: RecsType.String },
+                },
+                {
+                    metadata: {
+                        name: "rl_chess_contracts-GameSquares",
+                        types: ["u128", "u8", "u8", "enum", "enum"],
+                        customTypes: ["Piece"],
                     },
                 }
             );

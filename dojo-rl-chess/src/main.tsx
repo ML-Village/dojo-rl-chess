@@ -12,7 +12,7 @@ async function init() {
     const root = ReactDOM.createRoot(rootElement as HTMLElement);
 
     const setupResult = await setup(dojoConfig);
-
+    console.log("setupResult:");
     !setupResult && <div>Loading....</div>;
 
     root.render(

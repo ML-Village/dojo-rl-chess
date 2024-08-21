@@ -1243,8 +1243,8 @@
     {
       "kind": "DojoContract",
       "address": "0x4e27bbbb91d74b5bdda813858e37ad3b1ccbf4e9f82e9a6c33523e291ef9b73",
-      "class_hash": "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e",
-      "original_class_hash": "0x23c0512c2c2a12df265c32fa9862bf4a43245c73b05ed291409733ea998138e",
+      "class_hash": "0x61b33af9f66f58ee5d2b6f8e763aac42dc15bc5a996766813f01785a6c158a5",
+      "original_class_hash": "0x61b33af9f66f58ee5d2b6f8e763aac42dc15bc5a996766813f01785a6c158a5",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -1463,9 +1463,395 @@
     },
     {
       "kind": "DojoContract",
+      "address": "0x56f90d3b9b83798f6125d8b3c348cd3651976f45c11b4369bc7cb78c53f8c8b",
+      "class_hash": "0xf33b8a5ee2be2b670aba64442042e0f766ddeaa13b9f1526ad642deb767783",
+      "original_class_hash": "0xf33b8a5ee2be2b670aba64442042e0f766ddeaa13b9f1526ad642deb767783",
+      "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "ContractImpl",
+          "interface_name": "dojo::contract::contract::IContract"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::contract::IContract",
+          "items": [
+            {
+              "type": "function",
+              "name": "contract_name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "tag",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "name_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "selector",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "WorldProviderImpl",
+          "interface_name": "dojo::world::world_contract::IWorldProvider"
+        },
+        {
+          "type": "struct",
+          "name": "dojo::world::world_contract::IWorldDispatcher",
+          "members": [
+            {
+              "name": "contract_address",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::world::world_contract::IWorldProvider",
+          "items": [
+            {
+              "type": "function",
+              "name": "world",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::world::world_contract::IWorldDispatcher"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "GameRoomImpl",
+          "interface_name": "rl_chess_contracts::systems::gameroom::IGameRoom"
+        },
+        {
+          "type": "enum",
+          "name": "rl_chess_contracts::models::games::Color",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "White",
+              "type": "()"
+            },
+            {
+              "name": "Black",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "rl_chess_contracts::models::games::PieceType",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "Pawn",
+              "type": "()"
+            },
+            {
+              "name": "Knight",
+              "type": "()"
+            },
+            {
+              "name": "Bishop",
+              "type": "()"
+            },
+            {
+              "name": "Rook",
+              "type": "()"
+            },
+            {
+              "name": "Queen",
+              "type": "()"
+            },
+            {
+              "name": "King",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "rl_chess_contracts::models::games::Piece",
+          "members": [
+            {
+              "name": "color",
+              "type": "rl_chess_contracts::models::games::Color"
+            },
+            {
+              "name": "piece_type",
+              "type": "rl_chess_contracts::models::games::PieceType"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "rl_chess_contracts::systems::gameroom::IGameRoom",
+          "items": [
+            {
+              "type": "function",
+              "name": "start_game",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u128"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "make_move",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u128"
+                },
+                {
+                  "name": "from_x",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "from_y",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "to_x",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "to_y",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "promotion_choice",
+                  "type": "rl_chess_contracts::models::games::Piece"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "is_valid_move",
+              "inputs": [
+                {
+                  "name": "game_id",
+                  "type": "core::integer::u128"
+                },
+                {
+                  "name": "from_x",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "from_y",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "to_x",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "to_y",
+                  "type": "core::integer::u8"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "IDojoInitImpl",
+          "interface_name": "rl_chess_contracts::systems::gameroom::gameroom::IDojoInit"
+        },
+        {
+          "type": "interface",
+          "name": "rl_chess_contracts::systems::gameroom::gameroom::IDojoInit",
+          "items": [
+            {
+              "type": "function",
+              "name": "dojo_init",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "UpgradableImpl",
+          "interface_name": "dojo::contract::upgradeable::IUpgradeable"
+        },
+        {
+          "type": "interface",
+          "name": "dojo::contract::upgradeable::IUpgradeable",
+          "items": [
+            {
+              "type": "function",
+              "name": "upgrade",
+              "inputs": [
+                {
+                  "name": "new_class_hash",
+                  "type": "core::starknet::class_hash::ClassHash"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::upgradeable::upgradeable::Upgraded",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "class_hash",
+              "type": "core::starknet::class_hash::ClassHash",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo::contract::upgradeable::upgradeable::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Upgraded",
+              "type": "dojo::contract::upgradeable::upgradeable::Upgraded",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "rl_chess_contracts::systems::gameroom::gameroom::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "UpgradeableEvent",
+              "type": "dojo::contract::upgradeable::upgradeable::Event",
+              "kind": "nested"
+            }
+          ]
+        }
+      ],
+      "reads": [],
+      "writes": [],
+      "computed": [],
+      "init_calldata": [],
+      "tag": "rl_chess_contracts-gameroom",
+      "manifest_name": "rl_chess_contracts-gameroom-2640d291"
+    },
+    {
+      "kind": "DojoContract",
       "address": "0x49eeb5cefd6336ffccfecd9bbf218158fb0f1740999ef5a07b5045991f6ac41",
-      "class_hash": "0x1d7081008b2053eba1da33cc5bbaa053c828ccad9c66aa8ab34cae127ee7c6d",
-      "original_class_hash": "0x1d7081008b2053eba1da33cc5bbaa053c828ccad9c66aa8ab34cae127ee7c6d",
+      "class_hash": "0x3aa520c5100723d435d9a6ba94b8fe39582b60b1dc9e8922b77a541f9ccb25f",
+      "original_class_hash": "0x3aa520c5100723d435d9a6ba94b8fe39582b60b1dc9e8922b77a541f9ccb25f",
       "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
       "abi": [
         {
@@ -2887,6 +3273,516 @@
           "key": true
         },
         {
+          "name": "x",
+          "type": "u8",
+          "key": true
+        },
+        {
+          "name": "y",
+          "type": "u8",
+          "key": true
+        },
+        {
+          "name": "piece",
+          "type": "Piece",
+          "key": false
+        }
+      ],
+      "class_hash": "0x7d2490a0d4ff63d6cc602a92734f6543789a6fb826ac1924fad76c4a40cafbb",
+      "original_class_hash": "0x7d2490a0d4ff63d6cc602a92734f6543789a6fb826ac1924fad76c4a40cafbb",
+      "abi": [
+        {
+          "type": "impl",
+          "name": "DojoModelImpl",
+          "interface_name": "dojo::model::model::IModel"
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::option::Option::<core::integer::u32>",
+          "variants": [
+            {
+              "name": "Some",
+              "type": "core::integer::u32"
+            },
+            {
+              "name": "None",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::integer::u8>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::integer::u8>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::layout::FieldLayout",
+          "members": [
+            {
+              "name": "selector",
+              "type": "core::felt252"
+            },
+            {
+              "name": "layout",
+              "type": "dojo::model::layout::Layout"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::layout::FieldLayout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::layout::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::layout::Layout>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::layout::Layout>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::model::layout::Layout",
+          "variants": [
+            {
+              "name": "Fixed",
+              "type": "core::array::Span::<core::integer::u8>"
+            },
+            {
+              "name": "Struct",
+              "type": "core::array::Span::<dojo::model::layout::FieldLayout>"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::model::layout::Layout>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::model::layout::Layout>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            },
+            {
+              "name": "Enum",
+              "type": "core::array::Span::<dojo::model::layout::FieldLayout>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<core::felt252>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<core::felt252>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Member",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "ty",
+              "type": "dojo::model::introspect::Ty"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::introspect::Member>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Struct",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<dojo::model::introspect::Member>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<(core::felt252, dojo::model::introspect::Ty)>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<(core::felt252, dojo::model::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "dojo::model::introspect::Enum",
+          "members": [
+            {
+              "name": "name",
+              "type": "core::felt252"
+            },
+            {
+              "name": "attrs",
+              "type": "core::array::Span::<core::felt252>"
+            },
+            {
+              "name": "children",
+              "type": "core::array::Span::<(core::felt252, dojo::model::introspect::Ty)>"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::array::Span::<dojo::model::introspect::Ty>",
+          "members": [
+            {
+              "name": "snapshot",
+              "type": "@core::array::Array::<dojo::model::introspect::Ty>"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "dojo::model::introspect::Ty",
+          "variants": [
+            {
+              "name": "Primitive",
+              "type": "core::felt252"
+            },
+            {
+              "name": "Struct",
+              "type": "dojo::model::introspect::Struct"
+            },
+            {
+              "name": "Enum",
+              "type": "dojo::model::introspect::Enum"
+            },
+            {
+              "name": "Tuple",
+              "type": "core::array::Span::<dojo::model::introspect::Ty>"
+            },
+            {
+              "name": "Array",
+              "type": "core::array::Span::<dojo::model::introspect::Ty>"
+            },
+            {
+              "name": "ByteArray",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "dojo::model::model::IModel",
+          "items": [
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "tag",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "version",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "selector",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "name_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "namespace_hash",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::felt252"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "unpacked_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "packed_size",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::option::Option::<core::integer::u32>"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "layout",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::model::layout::Layout"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "schema",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "dojo::model::introspect::Ty"
+                }
+              ],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "game_squaresImpl",
+          "interface_name": "rl_chess_contracts::models::games::Igame_squares"
+        },
+        {
+          "type": "enum",
+          "name": "rl_chess_contracts::models::games::Color",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "White",
+              "type": "()"
+            },
+            {
+              "name": "Black",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "rl_chess_contracts::models::games::PieceType",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "Pawn",
+              "type": "()"
+            },
+            {
+              "name": "Knight",
+              "type": "()"
+            },
+            {
+              "name": "Bishop",
+              "type": "()"
+            },
+            {
+              "name": "Rook",
+              "type": "()"
+            },
+            {
+              "name": "Queen",
+              "type": "()"
+            },
+            {
+              "name": "King",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "rl_chess_contracts::models::games::Piece",
+          "members": [
+            {
+              "name": "color",
+              "type": "rl_chess_contracts::models::games::Color"
+            },
+            {
+              "name": "piece_type",
+              "type": "rl_chess_contracts::models::games::PieceType"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "rl_chess_contracts::models::games::GameSquares",
+          "members": [
+            {
+              "name": "game_id",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "x",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "y",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "piece",
+              "type": "rl_chess_contracts::models::games::Piece"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "rl_chess_contracts::models::games::Igame_squares",
+          "items": [
+            {
+              "type": "function",
+              "name": "ensure_abi",
+              "inputs": [
+                {
+                  "name": "model",
+                  "type": "rl_chess_contracts::models::games::GameSquares"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "rl_chess_contracts::models::games::game_squares::Event",
+          "kind": "enum",
+          "variants": []
+        }
+      ],
+      "tag": "rl_chess_contracts-GameSquares",
+      "manifest_name": "rl_chess_contracts-GameSquares-5c431eda"
+    },
+    {
+      "kind": "DojoModel",
+      "members": [
+        {
+          "name": "game_id",
+          "type": "u128",
+          "key": true
+        },
+        {
           "name": "white",
           "type": "u8",
           "key": false
@@ -2898,7 +3794,7 @@
         },
         {
           "name": "turn_color",
-          "type": "u8",
+          "type": "Color",
           "key": false
         },
         {
@@ -2927,13 +3823,53 @@
           "key": false
         },
         {
+          "name": "last_move_time",
+          "type": "u64",
+          "key": false
+        },
+        {
           "name": "game_end",
           "type": "u64",
           "key": false
+        },
+        {
+          "name": "whitekingside",
+          "type": "bool",
+          "key": false
+        },
+        {
+          "name": "whitequeenside",
+          "type": "bool",
+          "key": false
+        },
+        {
+          "name": "blackkingside",
+          "type": "bool",
+          "key": false
+        },
+        {
+          "name": "blackqueenside",
+          "type": "bool",
+          "key": false
+        },
+        {
+          "name": "halfmove_clock",
+          "type": "u16",
+          "key": false
+        },
+        {
+          "name": "en_passant_target_x",
+          "type": "u8",
+          "key": false
+        },
+        {
+          "name": "en_passant_target_y",
+          "type": "u8",
+          "key": false
         }
       ],
-      "class_hash": "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d",
-      "original_class_hash": "0x3cc1a64d881b5fca6b685d9ddd04c78f63e65c07971e0bfa67594c761298e6d",
+      "class_hash": "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481",
+      "original_class_hash": "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481",
       "abi": [
         {
           "type": "impl",
@@ -3303,6 +4239,38 @@
           "interface_name": "rl_chess_contracts::models::games::Igame_state"
         },
         {
+          "type": "enum",
+          "name": "rl_chess_contracts::models::games::Color",
+          "variants": [
+            {
+              "name": "None",
+              "type": "()"
+            },
+            {
+              "name": "White",
+              "type": "()"
+            },
+            {
+              "name": "Black",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
           "type": "struct",
           "name": "rl_chess_contracts::models::games::GameState",
           "members": [
@@ -3320,7 +4288,7 @@
             },
             {
               "name": "turn_color",
-              "type": "core::integer::u8"
+              "type": "rl_chess_contracts::models::games::Color"
             },
             {
               "name": "w_turn_expiry_time",
@@ -3343,8 +4311,40 @@
               "type": "core::integer::u64"
             },
             {
+              "name": "last_move_time",
+              "type": "core::integer::u64"
+            },
+            {
               "name": "game_end",
               "type": "core::integer::u64"
+            },
+            {
+              "name": "whitekingside",
+              "type": "core::bool"
+            },
+            {
+              "name": "whitequeenside",
+              "type": "core::bool"
+            },
+            {
+              "name": "blackkingside",
+              "type": "core::bool"
+            },
+            {
+              "name": "blackqueenside",
+              "type": "core::bool"
+            },
+            {
+              "name": "halfmove_clock",
+              "type": "core::integer::u16"
+            },
+            {
+              "name": "en_passant_target_x",
+              "type": "core::integer::u8"
+            },
+            {
+              "name": "en_passant_target_y",
+              "type": "core::integer::u8"
             }
           ]
         },

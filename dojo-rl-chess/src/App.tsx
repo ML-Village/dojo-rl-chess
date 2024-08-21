@@ -19,64 +19,42 @@ function App() {
         account,
     } = useDojo();
 
-    useQuerySync(toriiClient, contractComponents as any, [
-        {
-            Keys: {
-                keys: [BigInt(account?.account.address).toString()],
-                models: [
-                    //"rl_chess_contracts-Game",
-                    "rl_chess_contracts-Player",
-                    //"rl_chess_contracts-GameState",
-                ],
-                pattern_matching: "FixedLen",
-            },
-        },
-    ]);
+    // useQuerySync(toriiClient, contractComponents as any, [
+    //     {
+    //         Keys: {
+    //             keys: [BigInt(account?.account.address).toString()],
+    //             models: [
+    //                 //"rl_chess_contracts-Game",
+    //                 "rl_chess_contracts-Player",
+    //                 //"rl_chess_contracts-GameState",
+    //             ],
+    //             pattern_matching: "FixedLen",
+    //         },
+    //     },
+    // ]);
 
-
-    //const {open, setOpen} = useRegModalStore();
-    const entityId = getEntityIdFromKeys([
-        BigInt(account?.account.address),
-    ]) as Entity;
-    // get current component values
-    const player = useComponentValue(Player, entityId);
-
-    const hasGameFormats = useEntityQuery([Has(GameFormat)]);
-    console.log("hasGameFormats:")
-    console.log(hasGameFormats);
-
-    // useEffect for invoking modal set in navbar
-    // useEffect(() => {
-    //     // if there is no player or account is not yet loaded
-    //     if (!player || account?.count<0) {
-    //         console.log("player not registered.")
-    //         setOpen(true); // set Modal open if player not registered
-    //         return;
-    //     }
-    //     setOpen(false)
-    // },[player, account])
 
 
     return (
         <div className="flex flex-col
         bg-blue-800/20 h-screen
         ">
-            
-
-            <Router>
-                {/* <RegistrationModal /> */}
-                <BaseNavbar />
-
-                <Routes>
-                    {/* Lobby Page */}
-                    <Route path="/" element={<LobbyPage/>} />
-                    <Route path="/room/:roomId" element={<GameRoom />} />
-                </Routes>
-            </Router>
-        
+            hellos
             
         </div>
     );
 }
 
 export default App;
+
+
+// <Router>
+//                 {/* <RegistrationModal /> */}
+//                 <BaseNavbar />
+
+//                 <Routes>
+//                     {/* Lobby Page */}
+//                     <Route path="/" element={<LobbyPage/>} />
+//                     <Route path="/room/:roomId" element={<GameRoom />} />
+//                 </Routes>
+//             </Router>

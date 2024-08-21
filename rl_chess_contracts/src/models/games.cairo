@@ -74,11 +74,11 @@ struct GameSquares {
 
     // Original Way of having each entity as a square causes
     // events to be fired on each square
-
-    #[key]
-    y: u8,
     #[key]
     x: u8,
+    #[key]
+    y: u8,
+    
     piece: Piece,
 
     // New Way manually code out positions

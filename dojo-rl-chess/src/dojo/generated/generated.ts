@@ -146,5 +146,7 @@ export const setupWorld = async (provider: DojoProvider): Promise<IWorld> => {
 
     });
 
-    return { lobby: lobby() };
+    return { 
+        lobby: lobby() 
+    };
 };
