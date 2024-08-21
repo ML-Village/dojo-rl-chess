@@ -1,0 +1,9 @@
+tag = "rl_chess_contracts-gameroom"
+writes = [
+    "rl_chess_contracts-Game",
+    "rl_chess_contracts-GameFormat",
+    "rl_chess_contracts-GameState",
+    "rl_chess_contracts-GameSquares",
+    "rl_chess_contracts-Player",
+]
+init_calldata = []

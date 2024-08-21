@@ -115,8 +115,8 @@ export function defineContractComponents(world: World) {
                 world,
                 {
                     game_id: RecsType.BigInt,
-                    y: RecsType.Number,
                     x: RecsType.Number,
+                    y: RecsType.Number,
                     piece: { color: RecsType.String, piece_type: RecsType.String },
                 },
                 {

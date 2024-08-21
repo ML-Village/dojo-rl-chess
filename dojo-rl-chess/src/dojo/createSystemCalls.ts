@@ -267,66 +267,6 @@ export function createSystemCalls(
             }
         };
 
-
-    // const move = async (account: AccountInterface, direction: Direction) => {
-    //     const entityId = getEntityIdFromKeys([
-    //         BigInt(account.address),
-    //     ]) as Entity;
-
-    //     // // Update the state before the transaction
-    //     // const positionId = uuid();
-    //     // Position.addOverride(positionId, {
-    //     //     entity: entityId,
-    //     //     value: {
-    //     //         player: BigInt(entityId),
-    //     //         vec: updatePositionWithDirection(
-    //     //             direction,
-    //     //             getComponentValue(Position, entityId) as any
-    //     //         ).vec,
-    //     //     },
-    //     // });
-
-    //     // // Update the state before the transaction
-    //     // const movesId = uuid();
-    //     // Moves.addOverride(movesId, {
-    //     //     entity: entityId,
-    //     //     value: {
-    //     //         player: BigInt(entityId),
-    //     //         remaining:
-    //     //             (getComponentValue(Moves, entityId)?.remaining || 0) - 1,
-    //     //     },
-    //     // });
-
-    //     try {
-    //         await client.actions.move({
-    //             account,
-    //             direction,
-    //         });
-
-    //         // Wait for the indexer to update the entity
-    //         // By doing this we keep the optimistic UI in sync with the actual state
-    //         await new Promise<void>((resolve) => {
-    //             defineSystem(
-    //                 world,
-    //                 [
-    //                     Has(Moves),
-    //                     HasValue(Moves, { player: BigInt(account.address) }),
-    //                 ],
-    //                 () => {
-    //                     resolve();
-    //                 }
-    //             );
-    //         });
-    //     } catch (e) {
-    //         console.log(e);
-    //         Position.removeOverride(positionId);
-    //         Moves.removeOverride(movesId);
-    //     } finally {
-    //         Position.removeOverride(positionId);
-    //         Moves.removeOverride(movesId);
-    //     }
-    // };
-
     return {
         register_player,
         update_player,

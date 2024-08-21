@@ -7,8 +7,8 @@ import { BaseNavbar, RegistrationModal } from "@/components";
 import { LobbyPage, GameRoom } from "./pages";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-
 function App() {
+
     const {
         setup: {
             systemCalls: { register_player, update_player, invite, reply_invite },
@@ -19,19 +19,21 @@ function App() {
         account,
     } = useDojo();
 
-    // useQuerySync(toriiClient, contractComponents as any, [
-    //     {
-    //         Keys: {
-    //             keys: [BigInt(account?.account.address).toString()],
-    //             models: [
-    //                 //"rl_chess_contracts-Game",
-    //                 "rl_chess_contracts-Player",
-    //                 //"rl_chess_contracts-GameState",
-    //             ],
-    //             pattern_matching: "FixedLen",
-    //         },
-    //     },
-    // ]);
+    useQuerySync(toriiClient, contractComponents as any, [
+        {
+            Keys: {
+                keys: [BigInt(account?.account.address).toString()],
+                models: [
+                    "rl_chess_contracts-Game",
+                    "rl_chess_contracts-Player",
+                    "rl_chess_contracts-GameState",
+                    "rl_chess_contracts-GameFormat",
+                    "rl_chess_contracts-GameSquares",
+                ],
+                pattern_matching: "FixedLen",
+            },
+        },
+    ]);
 
 
 
@@ -39,7 +41,16 @@ function App() {
         <div className="flex flex-col
         bg-blue-800/20 h-screen
         ">
-            hellos
+            <Router>
+                {/* <RegistrationModal /> */}
+                <BaseNavbar />
+
+                <Routes>
+                    {/* Lobby Page */}
+                    <Route path="/" element={<LobbyPage/>} />
+                    <Route path="/room/:roomId" element={<GameRoom />} />
+                </Routes>
+            </Router>
             
         </div>
     );
@@ -47,14 +58,3 @@ function App() {
 
 export default App;
 
-
-// <Router>
-//                 {/* <RegistrationModal /> */}
-//                 <BaseNavbar />
-
-//                 <Routes>
-//                     {/* Lobby Page */}
-//                     <Route path="/" element={<LobbyPage/>} />
-//                     <Route path="/room/:roomId" element={<GameRoom />} />
-//                 </Routes>
-//             </Router>

@@ -7,6 +7,7 @@ import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { dojoConfig } from "../dojoConfig.ts";
 
 async function init() {
+
     const rootElement = document.getElementById("root");
     if (!rootElement) throw new Error("React root not found");
     const root = ReactDOM.createRoot(rootElement as HTMLElement);

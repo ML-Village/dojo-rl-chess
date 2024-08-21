@@ -15,7 +15,11 @@ export async function setup({ ...config }: DojoConfig) {
     // torii client
     const toriiClient = await torii.createClient({
         rpcUrl: config.rpcUrl,
-        toriiUrl: config.toriiUrl,
+
+        // check if using wsl2 in windows (if so, use "http://localhost:8080")
+        toriiUrl: (location.hostname=="localhost"||location.hostname=="127.0.0.1") ? 
+            "http://localhost:8080": config.toriiUrl,
+            
         relayUrl: "",
         worldAddress: config.manifest.world.address || "",
     });
@@ -53,6 +57,7 @@ export async function setup({ ...config }: DojoConfig) {
         if (burnerManager.list().length === 0) {
             await burnerManager.create();
         }
+        //console.log("burnerManager.list():", burnerManager.list());
     } catch (e) {
         console.error(e);
     }

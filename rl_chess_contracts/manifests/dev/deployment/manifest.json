@@ -1841,7 +1841,12 @@
         }
       ],
       "reads": [],
-      "writes": [],
+      "writes": [
+        "rl_chess_contracts-Game",
+        "rl_chess_contracts-GameFormat",
+        "rl_chess_contracts-GameState",
+        "rl_chess_contracts-Player"
+      ],
       "computed": [],
       "init_calldata": [],
       "tag": "rl_chess_contracts-gameroom",
