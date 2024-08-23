@@ -30,7 +30,7 @@ export const BaseNavbar = () => {
     account,
 } = useDojo();
 
-  const { open , setOpen } = useRegModalStore();
+  const { setOpen, regCount, incrementRegCount } = useRegModalStore();
   const navigate = useNavigate();
 
   const entityId = getEntityIdFromKeys([
@@ -44,12 +44,12 @@ export const BaseNavbar = () => {
     // if there is no player or account is not yet loaded
     if (!player || account?.count<0) {
       console.log("player not registered.")
-      setOpen(true); // set Modal open if player not registered
+      setOpen(true) // set Modal open if player not registered
       return;
     }
-    setOpen(false)
+    //regCount == 0 ? setOpen(false) : null;
 
-  },[player, account])
+  },[player, account, regCount])
 
   return (
     <nav className="bg-blue-950 shadow-md

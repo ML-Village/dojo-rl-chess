@@ -11,7 +11,7 @@ import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 
 import { formatAddress } from '@/utils';
-import { feltToString, stringToFelt } from "@/utils/starknet";
+import { feltToString } from "@/utils/starknet";
 import { AccountInterface } from "starknet";
 
 
@@ -29,7 +29,7 @@ export const RegistrationModal: React.FC = () => {
   } = useDojo();
 
   // modal
-  const {open, setOpen} = useRegModalStore();
+  const {open, setOpen, regCount, incrementRegCount} = useRegModalStore();
   const { pfpCarouselApi } = usePfpStore();
 
   // entity id we are syncing
@@ -127,9 +127,6 @@ export const RegistrationModal: React.FC = () => {
       nameValue, 1, pfpNum.toString());
     }  
   
-  
-
-  //console.log("current pfp num: ", pfpCarouselApi?.selectedScrollSnap())
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]
@@ -243,7 +240,11 @@ export const RegistrationModal: React.FC = () => {
                 hover:cursor-pointer
                 "
                 disabled={(!player || account?.count<0)}
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                    regCount == 0 ? incrementRegCount(): null;
+                    setOpen(false)
+                  }
+                }
                 >Confirm Config</Button>
           </div>
       </DialogContent>

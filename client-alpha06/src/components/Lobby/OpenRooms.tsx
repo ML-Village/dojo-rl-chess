@@ -102,7 +102,13 @@ export const OpenRooms = () => {
                     
                     const GameFormatIcon = gameFormatconfig[g?.game_format_id??1]?.icon ?? FaChessBoard;
 
-                    const gameState = g?.game_entity? getComponentValueStrict(GameState, g?.game_entity)??{}: {};
+                    let gameState = {};
+                    try {
+                        gameState = getComponentValueStrict(GameState, g?.generated_game_entity);
+                    } catch (e) {
+                        console.log("error getting gameState: ", e)
+                    }
+                    
                     console.log("gameState: ", gameState)
                     console.log("got entity?", g?.game_entity)
 

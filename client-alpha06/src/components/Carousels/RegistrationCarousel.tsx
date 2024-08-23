@@ -7,7 +7,7 @@ import {
     CarouselPrevious } from "@/components/ui/carousel"
 
 import { pfpCardImageUrl } from '@/constants/assetspath';
-import { usePfpStore } from '@/store';
+import { usePfpStore, useRegModalStore } from '@/store';
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from "react-icons/ri";
 
 const profilePics = [
@@ -20,7 +20,7 @@ export const RegistrationCarousel = () => {
     const prevButtonRef = useRef(null);
     const nextButtonRef = useRef(null);
     const { pfpCarouselApi, setPfpCarouselApi } = usePfpStore();
-    
+
     useEffect(() => {
         if (!pfpCarouselApi) {
             return
