@@ -69,8 +69,7 @@ export const RegistrationCarousel = () => {
                         {pfpCardImageUrl.map((imageUrl, index) => (
                             <CarouselItem key={index} 
                                 className="flex justify-center items-center
-                                        h-full aspect-square
-                                "
+                                        h-full aspect-square"
                                 style={
                                     {
                                         backgroundImage: `url(${imageUrl})`,
