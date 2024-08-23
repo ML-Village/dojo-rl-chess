@@ -24,11 +24,7 @@ function App() {
             Keys: {
                 keys: [BigInt(account?.account.address).toString()],
                 models: [
-                    "rl_chess_contracts-Game",
                     "rl_chess_contracts-Player",
-                    "rl_chess_contracts-GameState",
-                    "rl_chess_contracts-GameFormat",
-                    "rl_chess_contracts-GameSquares",
                 ],
                 pattern_matching: "FixedLen",
             },

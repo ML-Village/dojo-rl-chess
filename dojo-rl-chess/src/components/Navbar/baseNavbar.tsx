@@ -40,6 +40,23 @@ export const BaseNavbar = () => {
   const player = useComponentValue(Player, entityId);
   const playerName = getPlayerName(player) ?? "";
 
+
+  useQuerySync(toriiClient, contractComponents as any, [
+    {
+        Keys: {
+            keys: [BigInt(account?.account.address).toString()],
+            models: [
+                "rl_chess_contracts-Player",
+            ],
+            pattern_matching: "FixedLen",
+        },
+    },
+    player
+  ]);
+
+  console.log("player")
+  console.log(player)
+
   useEffect(() => {
     // if there is no player or account is not yet loaded
     if (!player || account?.count<0) {

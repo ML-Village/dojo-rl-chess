@@ -3,64 +3,64 @@ use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
-struct Game {
+pub struct Game {
     #[key]
-    game_id: u128,
-    game_format_id:u16,
-    room_owner_address: ContractAddress, //creator wallet address
-    invitee_address: ContractAddress, //invitee wallet address
+    pub game_id: u128,
+    pub game_format_id:u16,
+    pub room_owner_address: ContractAddress, //creator wallet address
+    pub invitee_address: ContractAddress, //invitee wallet address
 
-    invite_state: InviteState,
-    invite_expiry: u64, // Unix time, time for challenge to expire (0 for unlimited)
+    pub invite_state: InviteState,
+    pub invite_expiry: u64, // Unix time, time for challenge to expire (0 for unlimited)
 
-    result: u8, //  0:unresolved, 1:owner, 2:invitee, 3:draw
-    winner: ContractAddress, // winner wallet address
+    pub result: u8, //  0:unresolved, 1:owner, 2:invitee, 3:draw
+    pub winner: ContractAddress, // winner wallet address
 
     // timestamps in unix epoch
-    room_start: u64,       // Unix time, started
-    room_end: u64,         // Unix time, ended
+    pub room_start: u64,       // Unix time, started
+    pub room_end: u64,         // Unix time, ended
 }
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
-struct GameFormat {
+pub struct GameFormat {
     #[key]
-    game_format_id:u16,
-    description: felt252,
-    turn_expiry: u64, // Unix time, time for each turn to expire (0 for unlimited)
-    total_time_per_side: u64, // Unix time, total game time (0 for unlimited)
-    total_time_string: felt252,
-    increment: u8, // Unix time, time in seconds added after each turn (0 for no increment)
+    pub game_format_id:u16,
+    pub description: felt252,
+    pub turn_expiry: u64, // Unix time, time for each turn to expire (0 for unlimited)
+    pub total_time_per_side: u64, // Unix time, total game time (0 for unlimited)
+    pub total_time_string: felt252,
+    pub increment: u8, // Unix time, time in seconds added after each turn (0 for no increment)
 }
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
-struct GameState {
+pub struct GameState {
     #[key]
-    game_id: u128,
-    white: u8, // who is white, 0:owner, 1:invitee
-    turn: u32, // turn number
-    turn_color: Color, // 0:white, 1:black
+    pub game_id: u128,
+    pub white: u8, // who is white, 0:owner, 1:invitee
+    pub turn: u32, // turn number
+    pub turn_color: Color, // 0:white, 1:black
 
-    w_turn_expiry_time: u64,
-    b_turn_expiry_time: u64,
-    w_total_time_left: u64, // Unix time, total game time (0 for unlimited)
-    b_total_time_left: u64, // Unix time, total game time (0 for unlimited)
+    pub w_turn_expiry_time: u64,
+    pub b_turn_expiry_time: u64,
+    pub w_total_time_left: u64, // Unix time, total game time (0 for unlimited)
+    pub b_total_time_left: u64, // Unix time, total game time (0 for unlimited)
     
-    game_start: u64, // Unix time, started
-    last_move_time: u64, // Unix time, last move
-    game_end: u64, // Unix time, ended
+    pub game_start: u64, // Unix time, started
+    pub last_move_time: u64, // Unix time, last move
+    pub game_end: u64, // Unix time, ended
 
     // castling rights
-    whitekingside: bool,
-    whitequeenside: bool,
-    blackkingside: bool,
-    blackqueenside: bool,
+    pub whitekingside: bool,
+    pub whitequeenside: bool,
+    pub blackkingside: bool,
+    pub blackqueenside: bool,
 
     // move tracker
-    halfmove_clock: u16,
-    en_passant_target_x: u8,
-    en_passant_target_y: u8,
+    pub halfmove_clock: u16,
+    pub en_passant_target_x: u8,
+    pub en_passant_target_y: u8,
     //fullmove_number: u16, //using turn
 
     // NOT DOING ARRAYS OF ARRAYS yet to wait for stability in Cairo/Dojo
@@ -69,18 +69,18 @@ struct GameState {
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
-struct GameSquares {
+pub struct GameSquares {
     #[key]
-    game_id: u128,
+    pub game_id: u128,
 
     // Original Way of having each entity as a square causes
     // events to be fired on each square
     #[key]
-    x: u8,
+    pub x: u8,
     #[key]
-    y: u8,
+    pub y: u8,
     
-    piece: Piece,
+    pub piece: Piece,
 
     // New Way manually code out positions
     // 8: Array<Piece>, // a1-h1
@@ -119,16 +119,16 @@ enum PieceType {
 }
 
 #[derive(Drop, Copy, Clone, PartialEq, Introspect, Serde, Debug)]
-pub enum Color {
+enum Color {
     None,
     White,
     Black,
 }
 
 #[derive(Drop, Copy, PartialEq, Introspect, Serde, Debug)]
-struct Piece {
-    color: Color,
-    piece_type: PieceType,
+pub struct Piece {
+    pub color: Color,
+    pub piece_type: PieceType,
 }
 
 //----------------------------------
@@ -136,8 +136,8 @@ struct Piece {
 //
 
 #[derive(Copy, Drop)]
-struct GameManager {
-    world: IWorldDispatcher,
+pub struct GameManager {
+    pub world: IWorldDispatcher,
     //token_dispatcher: IERC721Dispatcher,
 }
 

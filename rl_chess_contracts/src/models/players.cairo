@@ -16,14 +16,14 @@ enum ProfilePicType {
 // #[derive(Copy, Drop, Serde)] // ByteArray is not copiable!
 #[derive(Clone, Drop, Serde)]   // pass to functions using duelist.clone()
 #[dojo::model]
-struct Player {
+pub struct Player {
     #[key]
-    address: ContractAddress,   // wallet address
+    pub address: ContractAddress,   // wallet address
     //-----------------------
-    name: felt252,
-    profile_pic_type: ProfilePicType,
-    profile_pic_uri: ByteArray,     // can be anything
-    timestamp: u64,                 // date registered
+    pub name: felt252,
+    pub profile_pic_type: ProfilePicType,
+    pub profile_pic_uri: ByteArray,     // can be anything
+    pub timestamp: u64,                 // date registered
 }
 
 

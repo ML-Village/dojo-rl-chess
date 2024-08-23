@@ -1,12 +1,12 @@
 [world]
 kind = "WorldContract"
-class_hash = "0x2178527e9556d1aa21d3c2961d28f9114fcfed81b4c3674ed591c50ce46cc9d"
-original_class_hash = "0x2178527e9556d1aa21d3c2961d28f9114fcfed81b4c3674ed591c50ce46cc9d"
+class_hash = "0x458d0ce5b14a4844092bdb62050f462d53362304a13febbac6d973691d61be2"
+original_class_hash = "0x458d0ce5b14a4844092bdb62050f462d53362304a13febbac6d973691d61be2"
 abi = "manifests/dev/deployment/abis/dojo-world.json"
-address = "0x62540c14ee905c20b8f3d078fabe3dffb9712259b23290146be583edb8678aa"
-transaction_hash = "0x4f05d448c2e9b1bb6ad0b69ecc7fc8ba3baa661340276929abef01012f42f95"
+address = "0x154f50b2e8a50397b1a71d5964d0a8f299ea821867a00365bb9cb8488601640"
+transaction_hash = "0x5961c19ef5869512a674224b6fbac3d0e004580b638da839d514392f06c4b28"
 block_number = 3
-seed = "dojo_rl_chess"
+seed = "rl_chess_contracts"
 manifest_name = "dojo-world"
 
 [world.metadata]
@@ -23,23 +23,23 @@ manifest_name = "dojo-base"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x4e27bbbb91d74b5bdda813858e37ad3b1ccbf4e9f82e9a6c33523e291ef9b73"
-class_hash = "0x61b33af9f66f58ee5d2b6f8e763aac42dc15bc5a996766813f01785a6c158a5"
-original_class_hash = "0x61b33af9f66f58ee5d2b6f8e763aac42dc15bc5a996766813f01785a6c158a5"
+address = "0x3dd4355aad3b89a8f01ac523b7434376c7d6de049757defeeba3f4abec26edc"
+class_hash = "0xebb3f6f5e1c76a796341d1a545a24cb66793c154c422939dba0649b64c17d4"
+original_class_hash = "0xebb3f6f5e1c76a796341d1a545a24cb66793c154c422939dba0649b64c17d4"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-admin-264050f1.json"
 reads = []
 writes = ["rl_chess_contracts-GameFormat"]
-computed = []
 init_calldata = []
 tag = "rl_chess_contracts-admin"
+systems = []
 manifest_name = "rl_chess_contracts-admin-264050f1"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x56f90d3b9b83798f6125d8b3c348cd3651976f45c11b4369bc7cb78c53f8c8b"
-class_hash = "0xf33b8a5ee2be2b670aba64442042e0f766ddeaa13b9f1526ad642deb767783"
-original_class_hash = "0xf33b8a5ee2be2b670aba64442042e0f766ddeaa13b9f1526ad642deb767783"
+address = "0xc43883bdb0c2f329f21f7b680e3eb46b92a42b8ba43cce1ee6d8db5f31bdf4"
+class_hash = "0x59a2e479ec0229c981769c284c2e83d3107f5a8e6e749427979f48aea22f5bf"
+original_class_hash = "0x59a2e479ec0229c981769c284c2e83d3107f5a8e6e749427979f48aea22f5bf"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-gameroom-2640d291.json"
 reads = []
@@ -50,16 +50,19 @@ writes = [
     "rl_chess_contracts-GameSquares",
     "rl_chess_contracts-Player",
 ]
-computed = []
 init_calldata = []
 tag = "rl_chess_contracts-gameroom"
+systems = [
+    "start_game",
+    "make_move",
+]
 manifest_name = "rl_chess_contracts-gameroom-2640d291"
 
 [[contracts]]
 kind = "DojoContract"
-address = "0x49eeb5cefd6336ffccfecd9bbf218158fb0f1740999ef5a07b5045991f6ac41"
-class_hash = "0x5d6c9260b98ce033ba0b6c6670a4b20d5b1dc8b66baa52e2f912e8f413af658"
-original_class_hash = "0x5d6c9260b98ce033ba0b6c6670a4b20d5b1dc8b66baa52e2f912e8f413af658"
+address = "0x2ff688f2ac96d256f3f09c91159cdcc41089de4e59649ff1806a821074eb99f"
+class_hash = "0x29aaf81a958b39202b81b4099d7956084983166e45c5d9ff4fcdb0299e747ee"
+original_class_hash = "0x29aaf81a958b39202b81b4099d7956084983166e45c5d9ff4fcdb0299e747ee"
 base_class_hash = "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2"
 abi = "manifests/dev/deployment/abis/contracts/rl_chess_contracts-lobby-5515fed8.json"
 reads = []
@@ -69,15 +72,15 @@ writes = [
     "rl_chess_contracts-GameState",
     "rl_chess_contracts-Player",
 ]
-computed = []
 init_calldata = []
 tag = "rl_chess_contracts-lobby"
+systems = []
 manifest_name = "rl_chess_contracts-lobby-5515fed8"
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x3651a13464d8c028fd42ab593eb4e474b5d6d113d9f1fb2d1020a900fb18ee"
-original_class_hash = "0x3651a13464d8c028fd42ab593eb4e474b5d6d113d9f1fb2d1020a900fb18ee"
+class_hash = "0x7f536eb478cefcc4d398f2eac5cba8af3ae2d099400a87c840799dada88f9b2"
+original_class_hash = "0x7f536eb478cefcc4d398f2eac5cba8af3ae2d099400a87c840799dada88f9b2"
 abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-Game-2f660bca.json"
 tag = "rl_chess_contracts-Game"
 manifest_name = "rl_chess_contracts-Game-2f660bca"
@@ -134,8 +137,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x77b1fde203add2f3be20d09c4edff53936c575cb04f60ac7470be12a2bcc909"
-original_class_hash = "0x77b1fde203add2f3be20d09c4edff53936c575cb04f60ac7470be12a2bcc909"
+class_hash = "0x439e45f3eac03d7592d754c516f6148d850805a3b6804bd2ad7dc7e44985356"
+original_class_hash = "0x439e45f3eac03d7592d754c516f6148d850805a3b6804bd2ad7dc7e44985356"
 abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-GameFormat-1a210de8.json"
 tag = "rl_chess_contracts-GameFormat"
 manifest_name = "rl_chess_contracts-GameFormat-1a210de8"
@@ -172,8 +175,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x7d2490a0d4ff63d6cc602a92734f6543789a6fb826ac1924fad76c4a40cafbb"
-original_class_hash = "0x7d2490a0d4ff63d6cc602a92734f6543789a6fb826ac1924fad76c4a40cafbb"
+class_hash = "0x712b9ecc87d0c1c506ccbc572edc4f20969a95eb14aa911d73dc80d4b6d6597"
+original_class_hash = "0x712b9ecc87d0c1c506ccbc572edc4f20969a95eb14aa911d73dc80d4b6d6597"
 abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-GameSquares-5c431eda.json"
 tag = "rl_chess_contracts-GameSquares"
 manifest_name = "rl_chess_contracts-GameSquares-5c431eda"
@@ -200,8 +203,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
-original_class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
+class_hash = "0x5fd277528e3980fd742ea2c94825d69e74ace7db2bac325525b3ba11a6bed62"
+original_class_hash = "0x5fd277528e3980fd742ea2c94825d69e74ace7db2bac325525b3ba11a6bed62"
 abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-GameState-28b58a4f.json"
 tag = "rl_chess_contracts-GameState"
 manifest_name = "rl_chess_contracts-GameState-28b58a4f"
@@ -298,8 +301,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x44ca612a73c1a9b146f54a1755eb2a53db5887854b0af807b3c4ebe173448d7"
-original_class_hash = "0x44ca612a73c1a9b146f54a1755eb2a53db5887854b0af807b3c4ebe173448d7"
+class_hash = "0x4924922a31f97292ec92244afaaed70f9a343543d8f9b39a83461ca06bdf33d"
+original_class_hash = "0x4924922a31f97292ec92244afaaed70f9a343543d8f9b39a83461ca06bdf33d"
 abi = "manifests/dev/deployment/abis/models/rl_chess_contracts-Player-40fe735b.json"
 tag = "rl_chess_contracts-Player"
 manifest_name = "rl_chess_contracts-Player-40fe735b"

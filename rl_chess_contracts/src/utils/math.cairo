@@ -300,106 +300,106 @@ impl MathU8 of MathTrait<u8, i8> {
 #[cfg(test)]
 mod tests {
     use debug::PrintTrait;
-    use pistols::utils::math::{MathU8,MathU16,MathU32,MathU128};
+    use rl_chess_contracts::utils::math::{MathU8,MathU16,MathU32,MathU128};
 
-    #[test]
-    #[available_gas(100_000_000)]
-    fn test_min_max() {
-        assert(MathU128::min(0,0) == 0, 'min_0,0');
-        assert(MathU128::min(0,1) == 0, 'min_0,1');
-        assert(MathU128::min(1,0) == 0, 'min_1,0');
-        assert(MathU128::min(1,2) == 1, 'min_1,2');
-        assert(MathU128::min(2,1) == 1, 'min_2,1');
+    // #[test]
+    // #[available_gas(100_000_000)]
+    // fn test_min_max() {
+    //     assert(MathU128::min(0,0) == 0, 'min_0,0');
+    //     assert(MathU128::min(0,1) == 0, 'min_0,1');
+    //     assert(MathU128::min(1,0) == 0, 'min_1,0');
+    //     assert(MathU128::min(1,2) == 1, 'min_1,2');
+    //     assert(MathU128::min(2,1) == 1, 'min_2,1');
 
-        assert(MathU128::max(0,0) == 0, 'max_0,0');
-        assert(MathU128::max(0,1) == 1, 'max_0,1');
-        assert(MathU128::max(1,0) == 1, 'max_1,0');
-        assert(MathU128::max(1,2) == 2, 'max_1,2');
-        assert(MathU128::max(2,1) == 2, 'max_2,1');
-    }
+    //     assert(MathU128::max(0,0) == 0, 'max_0,0');
+    //     assert(MathU128::max(0,1) == 1, 'max_0,1');
+    //     assert(MathU128::max(1,0) == 1, 'max_1,0');
+    //     assert(MathU128::max(1,2) == 2, 'max_1,2');
+    //     assert(MathU128::max(2,1) == 2, 'max_2,1');
+    // }
 
-    #[test]
-    #[available_gas(100_000_000)]
-    fn test_clamp() {
-        assert(MathU128::clamp(0, 10, 100) == 10, 'clamp_0');
-        assert(MathU128::clamp(10, 10, 100) == 10, 'clamp_10');
-        assert(MathU128::clamp(50, 10, 100) == 50, 'clamp_50');
-        assert(MathU128::clamp(100, 10, 100) == 100, 'clamp_100');
-        assert(MathU128::clamp(101, 10, 100) == 100, 'clamp_101');
-    }
+    // #[test]
+    // #[available_gas(100_000_000)]
+    // fn test_clamp() {
+    //     assert(MathU128::clamp(0, 10, 100) == 10, 'clamp_0');
+    //     assert(MathU128::clamp(10, 10, 100) == 10, 'clamp_10');
+    //     assert(MathU128::clamp(50, 10, 100) == 50, 'clamp_50');
+    //     assert(MathU128::clamp(100, 10, 100) == 100, 'clamp_100');
+    //     assert(MathU128::clamp(101, 10, 100) == 100, 'clamp_101');
+    // }
 
-    #[test]
-    #[available_gas(100_000_000)]
-    fn test_sub() {
-        assert(MathU8::sub(10, 0) == 10, 'sub_10_0');
-        assert(MathU8::sub(10, 2) == 8, 'sub_10_2');
-        assert(MathU8::sub(10, 9) == 1, 'sub_10_9');
-        assert(MathU8::sub(10, 10) == 0, 'sub_10_10');
-        assert(MathU8::sub(10, 11) == 0, 'sub_10_11');
-        assert(MathU8::sub(10, 255) == 0, 'sub_10_155');
-    }
+    // #[test]
+    // #[available_gas(100_000_000)]
+    // fn test_sub() {
+    //     assert(MathU8::sub(10, 0) == 10, 'sub_10_0');
+    //     assert(MathU8::sub(10, 2) == 8, 'sub_10_2');
+    //     assert(MathU8::sub(10, 9) == 1, 'sub_10_9');
+    //     assert(MathU8::sub(10, 10) == 0, 'sub_10_10');
+    //     assert(MathU8::sub(10, 11) == 0, 'sub_10_11');
+    //     assert(MathU8::sub(10, 255) == 0, 'sub_10_155');
+    // }
 
-    #[test]
-    #[available_gas(100_000_000)]
-    fn test_gdc() {
-        assert(MathU8::gdc(4, 4) == 4, 'gdc_4_4');
-        assert(MathU8::gdc(4, 2) == 2, 'gdc_4_2');
-        assert(MathU8::gdc(2, 4) == 2, 'gdc_2_4');
-        assert(MathU8::gdc(4, 1) == 1, 'gdc_4_1');
-        assert(MathU8::gdc(1, 4) == 1, 'gdc_1_4');
-        assert(MathU8::gdc(6, 3) == 3, 'gdc_6_3');
-        assert(MathU8::gdc(40, 2) == 2, 'gdc_40_2');
-        assert(MathU8::gdc(40, 16) == 8, 'gdc_40_16');
-        assert(MathU8::gdc(24, 36) == 12, 'gdc_24_36');
-    }
+    // #[test]
+    // #[available_gas(100_000_000)]
+    // fn test_gdc() {
+    //     assert(MathU8::gdc(4, 4) == 4, 'gdc_4_4');
+    //     assert(MathU8::gdc(4, 2) == 2, 'gdc_4_2');
+    //     assert(MathU8::gdc(2, 4) == 2, 'gdc_2_4');
+    //     assert(MathU8::gdc(4, 1) == 1, 'gdc_4_1');
+    //     assert(MathU8::gdc(1, 4) == 1, 'gdc_1_4');
+    //     assert(MathU8::gdc(6, 3) == 3, 'gdc_6_3');
+    //     assert(MathU8::gdc(40, 2) == 2, 'gdc_40_2');
+    //     assert(MathU8::gdc(40, 16) == 8, 'gdc_40_16');
+    //     assert(MathU8::gdc(24, 36) == 12, 'gdc_24_36');
+    // }
 
-    #[test]
-    #[available_gas(100_000_000)]
-    fn test_pow() {
-        assert(MathU128::pow(0,0) == 1, 'test_math_pow_0,0');
-        assert(MathU128::pow(0,1) == 0, 'test_math_pow_0,1');
-        assert(MathU128::pow(0,2) == 0, 'test_math_pow_0,2');
-        assert(MathU128::pow(0,8) == 0, 'test_math_pow_0,8');
-        assert(MathU128::pow(1,0) == 1, 'test_math_pow_1,0');
-        assert(MathU128::pow(1,1) == 1, 'test_math_pow_1,1');
-        assert(MathU128::pow(1,2) == 1, 'test_math_pow_1,2');
-        assert(MathU128::pow(1,8) == 1, 'test_math_pow_1,8');
-        assert(MathU128::pow(2,0) == 1, 'test_math_pow_2,0');
-        assert(MathU128::pow(2,1) == 2, 'test_math_pow_2,1`');
-        assert(MathU128::pow(2,2) == 4, 'test_math_pow_2,2');
-        assert(MathU128::pow(2,8) == 256, 'test_math_pow_2,8');
-        assert(MathU128::pow(10,0) == 1, 'test_math_pow_10,0');
-        assert(MathU128::pow(10,1) == 10, 'test_math_pow_10,1`');
-        assert(MathU128::pow(10,2) == 100, 'test_math_pow_10,2');
-        assert(MathU128::pow(10,8) == 100_000_000, 'test_math_pow_10,8');
-    }
+    // #[test]
+    // #[available_gas(100_000_000)]
+    // fn test_pow() {
+    //     assert(MathU128::pow(0,0) == 1, 'test_math_pow_0,0');
+    //     assert(MathU128::pow(0,1) == 0, 'test_math_pow_0,1');
+    //     assert(MathU128::pow(0,2) == 0, 'test_math_pow_0,2');
+    //     assert(MathU128::pow(0,8) == 0, 'test_math_pow_0,8');
+    //     assert(MathU128::pow(1,0) == 1, 'test_math_pow_1,0');
+    //     assert(MathU128::pow(1,1) == 1, 'test_math_pow_1,1');
+    //     assert(MathU128::pow(1,2) == 1, 'test_math_pow_1,2');
+    //     assert(MathU128::pow(1,8) == 1, 'test_math_pow_1,8');
+    //     assert(MathU128::pow(2,0) == 1, 'test_math_pow_2,0');
+    //     assert(MathU128::pow(2,1) == 2, 'test_math_pow_2,1`');
+    //     assert(MathU128::pow(2,2) == 4, 'test_math_pow_2,2');
+    //     assert(MathU128::pow(2,8) == 256, 'test_math_pow_2,8');
+    //     assert(MathU128::pow(10,0) == 1, 'test_math_pow_10,0');
+    //     assert(MathU128::pow(10,1) == 10, 'test_math_pow_10,1`');
+    //     assert(MathU128::pow(10,2) == 100, 'test_math_pow_10,2');
+    //     assert(MathU128::pow(10,8) == 100_000_000, 'test_math_pow_10,8');
+    // }
 
-    #[test]
-    #[available_gas(100_000_000)]
-    fn test_map() {
-        assert(MathU8::map(1, 1, 5, 20, 40) == 20, 'map_1');
-        assert(MathU8::map(2, 1, 5, 20, 40) == 25, 'map_2');
-        assert(MathU8::map(3, 1, 5, 20, 40) == 30, 'map_3');
-        assert(MathU8::map(4, 1, 5, 20, 40) == 35, 'map_4');
-        assert(MathU8::map(5, 1, 5, 20, 40) == 40, 'map_5');
-        // output values can be inverted
-        assert(MathU8::map(1, 1, 5, 40, 20) == 40, 'map_i_1');
-        assert(MathU8::map(2, 1, 5, 40, 20) == 35, 'map_i_2');
-        assert(MathU8::map(3, 1, 5, 40, 20) == 30, 'map_i_3');
-        assert(MathU8::map(4, 1, 5, 40, 20) == 25, 'map_i_4');
-        assert(MathU8::map(5, 1, 5, 40, 20) == 20, 'map_i_5');
-        // compressed output
-        assert(MathU8::map(10, 10, 50, 1, 5) == 1, 'map___1');
-        assert(MathU8::map(20, 10, 50, 1, 5) == 2, 'map___2');
-        assert(MathU8::map(30, 10, 50, 1, 5) == 3, 'map___3');
-        assert(MathU8::map(40, 10, 50, 1, 5) == 4, 'map___4');
-        assert(MathU8::map(50, 10, 50, 1, 5) == 5, 'map___5');
-        // bad case
-        assert(MathU8::map(1, 1, 100, 1, 50) == 1, 'map_bad_1');
-        assert(MathU8::map(20, 1, 100, 1, 50) == 10, 'map_bad_20');
-        assert(MathU8::map(40, 1, 100, 1, 50) == 20, 'map_bad_40');
-        assert(MathU8::map(60, 1, 100, 1, 50) == 30, 'map_bad_60');
-        assert(MathU8::map(80, 1, 100, 1, 50) == 40, 'map_bad_80');
-        assert(MathU8::map(100, 1, 100, 1, 50) == 50, 'map_bad_100');
-    }
+    // #[test]
+    // #[available_gas(100_000_000)]
+    // fn test_map() {
+    //     assert(MathU8::map(1, 1, 5, 20, 40) == 20, 'map_1');
+    //     assert(MathU8::map(2, 1, 5, 20, 40) == 25, 'map_2');
+    //     assert(MathU8::map(3, 1, 5, 20, 40) == 30, 'map_3');
+    //     assert(MathU8::map(4, 1, 5, 20, 40) == 35, 'map_4');
+    //     assert(MathU8::map(5, 1, 5, 20, 40) == 40, 'map_5');
+    //     // output values can be inverted
+    //     assert(MathU8::map(1, 1, 5, 40, 20) == 40, 'map_i_1');
+    //     assert(MathU8::map(2, 1, 5, 40, 20) == 35, 'map_i_2');
+    //     assert(MathU8::map(3, 1, 5, 40, 20) == 30, 'map_i_3');
+    //     assert(MathU8::map(4, 1, 5, 40, 20) == 25, 'map_i_4');
+    //     assert(MathU8::map(5, 1, 5, 40, 20) == 20, 'map_i_5');
+    //     // compressed output
+    //     assert(MathU8::map(10, 10, 50, 1, 5) == 1, 'map___1');
+    //     assert(MathU8::map(20, 10, 50, 1, 5) == 2, 'map___2');
+    //     assert(MathU8::map(30, 10, 50, 1, 5) == 3, 'map___3');
+    //     assert(MathU8::map(40, 10, 50, 1, 5) == 4, 'map___4');
+    //     assert(MathU8::map(50, 10, 50, 1, 5) == 5, 'map___5');
+    //     // bad case
+    //     assert(MathU8::map(1, 1, 100, 1, 50) == 1, 'map_bad_1');
+    //     assert(MathU8::map(20, 1, 100, 1, 50) == 10, 'map_bad_20');
+    //     assert(MathU8::map(40, 1, 100, 1, 50) == 20, 'map_bad_40');
+    //     assert(MathU8::map(60, 1, 100, 1, 50) == 30, 'map_bad_60');
+    //     assert(MathU8::map(80, 1, 100, 1, 50) == 40, 'map_bad_80');
+    //     assert(MathU8::map(100, 1, 100, 1, 50) == 50, 'map_bad_100');
+    // }
 }

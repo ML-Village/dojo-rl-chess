@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
-original_class_hash = "0x6c3d9f8eca1c791b2f2250355c35831451e2422ca1ff1004d3b364ac17c481"
+class_hash = "0x5fd277528e3980fd742ea2c94825d69e74ace7db2bac325525b3ba11a6bed62"
+original_class_hash = "0x5fd277528e3980fd742ea2c94825d69e74ace7db2bac325525b3ba11a6bed62"
 abi = "manifests/dev/base/abis/models/rl_chess_contracts-GameState-28b58a4f.json"
 tag = "rl_chess_contracts-GameState"
 manifest_name = "rl_chess_contracts-GameState-28b58a4f"

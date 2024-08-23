@@ -39,17 +39,21 @@ export const OpenRooms = () => {
     const hasPlayers = useEntityQuery([Has(Player)]);
     const hasGames = useEntityQuery([Has(Game)]);
 
-    // const playersData = hasPlayers.map((entity) => {
-    //     const p = getComponentValueStrict(Player, entity)??{};
-    //     const generatedEntity = getEntityIdFromKeys([
-    //         p?.address?? BigInt("0x0"),
-    //     ]) as Entity;
-    //     return {
-    //         generated_entity: generatedEntity,
-    //         player_entity: entity??"0x0",
-    //         ...p
-    //         }
-    // })
+    console.log("games entity")
+    console.log(hasGames)
+
+    useQuerySync(toriiClient, contractComponents as any, [
+        {
+            Keys: {
+                keys: hasGames,
+                models: [
+                    "rl_chess_contracts-Games",
+                ],
+                pattern_matching: "FixedLen",
+            },
+        },
+    ]);
+
     const gamesData = hasGames.map((entity) => {
         //console.log("games data entity:", entity)
         const g = getComponentValueStrict(Game, entity)
