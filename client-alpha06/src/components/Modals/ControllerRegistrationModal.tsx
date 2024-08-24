@@ -12,26 +12,27 @@ import { Entity } from "@dojoengine/recs";
 
 import { formatAddress } from '@/utils';
 import { feltToString } from "@/utils/starknet";
-import { AccountInterface } from "starknet";
+//import { Account, AccountInterface } from "starknet";
+import { useAccount } from '@starknet-react/core';
 
 
-export const RegistrationModal: React.FC = () => {
+export const ControllerRegistrationModal: React.FC = () => {
 
   const {
     setup: {
       systemCalls: { register_player, update_player },
       clientComponents: { Player },
   },
-    account,
+    //account,
   } = useDojo();
-
+  const { account, address, isConnected } = useAccount()
   // modal
   const {open, setOpen, regCount, incrementRegCount} = useRegModalStore();
   const { pfpCarouselApi } = usePfpStore();
 
   // entity id we are syncing
   const entityId = getEntityIdFromKeys([
-    BigInt(account?.account.address),
+    BigInt(address??""),
   ]) as Entity;
 
   // get current component values
@@ -46,8 +47,8 @@ export const RegistrationModal: React.FC = () => {
 
   // use to check if there is existing registered player
   useEffect(() => {
-    // if there is no player or account is not yet loaded
-    if (!player || account?.count<0) {
+    // if there is no player
+    if (!player) {
       console.log("player not registered.")
       pfpCarouselApi?.scrollTo(0);
       setNameValue("");
@@ -96,7 +97,7 @@ export const RegistrationModal: React.FC = () => {
       pfpCarouselApi?.scrollTo(player_profile_pic_uri)
     }
 
-  }, [player, pfpCarouselApi, account]);
+  }, [player, pfpCarouselApi, address, isConnected]);
 
   const registerPlayer = async () => {
     if (!nameValue || nameValue.trim() === '') return;
@@ -106,7 +107,7 @@ export const RegistrationModal: React.FC = () => {
 
     console.log("registering: ", nameValue);
     console.log("registering pfp: ", pfpNum.toString());
-    await register_player(account.account as AccountInterface, 
+    await register_player(account, 
       nameValue, 1, pfpNum.toString());
     }  
 
@@ -115,10 +116,10 @@ export const RegistrationModal: React.FC = () => {
     const pfpNum = pfpCarouselApi?.selectedScrollSnap()
     if (pfpNum=== undefined) return;
 
-    console.log("updating name, address: ", nameValue, account.account.address);
+    console.log("updating name, address: ", nameValue, address??"");
     console.log("updating pfp: ", pfpNum.toString());
 
-    await update_player(account.account as AccountInterface, 
+    await update_player(account, 
       nameValue, 1, pfpNum.toString());
     }  
   
@@ -138,49 +139,19 @@ export const RegistrationModal: React.FC = () => {
           <div className="rounded-md">
             
             <div>
-                {/* create burners */}
-                <div className="w-full flex py-1">
-                  <Button 
-                  className="bg-orange-300
-                  border border-gray-700
-                  mx-1 ml-auto 
-                  p-1 px-2 rounded-md
-                  text-gray-800 hover:text-white
-                  "
-                    onClick={() => account.clear()}>
-                        clear burners
-                    </Button>
-                  <Button 
-                  className="bg-blue-900/80
-                  border border-gray-700
-                  p-1 px-2 rounded-md
-                  "
-                  onClick={() => account?.create()}>
-                  {account?.isDeploying ? "deploying burner" : "create burner"}
-                  </Button>
-                  
-                </div>
+                
 
                 {/* select burners */}
                 <div className="flex">
-                  <span className="text-nowrap
-                  p-1 px-2 rounded-md">
-                    select signer:{" "}
-                    </span>
-                  <select className="w-full border border-gray-500/50 rounded-md my-1
-                  py-1 focus:outline-none focus:ring-1 focus:ring-blue-500
+                  <div className="w-full 
+                  p-2
+                  border rounded-lg
+                  bg-gray-600/70 text-gray-800/70
+                  truncate
                   "
-                      value={account ? account.account.address : ""}
-                      onChange={(e) => account.select(e.target.value)}
                   >
-                      {account?.list().map((account, index) => {
-                          return (
-                              <option value={account.address} key={index}>
-                                  {account.address}
-                              </option>
-                          );
-                      })}
-                  </select>
+                    {address??""}
+                  </div>
                 </div>
                 
                 <div className="flex my-1">
@@ -234,7 +205,7 @@ export const RegistrationModal: React.FC = () => {
                 className="bg-green-800
                 hover:cursor-pointer
                 "
-                disabled={(!player || account?.count<0)}
+                disabled={!player}
                 onClick={() => {
                     regCount == 0 ? incrementRegCount(): null;
                     setOpen(false)
