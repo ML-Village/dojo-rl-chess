@@ -1,11 +1,16 @@
 import { DojoConfig, DojoProvider } from "@dojoengine/core";
 import * as torii from "@dojoengine/torii-client";
+
+import { Account, WeierstrassSignatureType, 
+  RpcProvider, ArraySignatureType } from "starknet";
+
+
 import { createClientComponents } from "./createClientComponents";
 import { createSystemCalls } from "./createSystemCalls";
 import { defineContractComponents } from "./typescript/models.gen";
 import { world } from "./world";
 import { setupWorld } from "./typescript/contracts.gen";
-import { Account, ArraySignatureType } from "starknet";
+//import { Account, ArraySignatureType } from "starknet";
 import { BurnerManager } from "@dojoengine/create-burner";
 import { getSyncEntities } from "@dojoengine/state";
 
@@ -40,12 +45,18 @@ export async function setup({ ...config }: DojoConfig) {
   // setup world
   const client = await setupWorld(dojoProvider);
 
+  const rpcProvider = new RpcProvider({
+    nodeUrl: config.rpcUrl,
+  });
+
+
   // create burner manager
   const burnerManager = new BurnerManager({
     masterAccount: new Account(
-      {
-        nodeUrl: config.rpcUrl,
-      },
+      // {
+      //   nodeUrl: config.rpcUrl,
+      // },
+      rpcProvider,
       config.masterAddress,
       config.masterPrivateKey
     ),
@@ -56,9 +67,12 @@ export async function setup({ ...config }: DojoConfig) {
 
   try {
     await burnerManager.init();
-    if (burnerManager.list().length === 0) {
-      await burnerManager.create();
-    }
+
+    // not burner wallet but Cartridge controller now.
+    
+    // if (burnerManager.list().length === 0) {
+    //   await burnerManager.create();
+    // }
   } catch (e) {
     console.error(e);
   }

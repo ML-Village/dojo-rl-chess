@@ -1,44 +1,38 @@
 import React, {useEffect, useState} from 'react';
 import { FaChessKnight } from "react-icons/fa";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
 
 import { useDojo } from "@/dojo/useDojo";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
-import { Entity, Has, HasValue, getComponentValueStrict } from "@dojoengine/recs";
+import { useComponentValue } from "@dojoengine/react";
+import { Entity} from "@dojoengine/recs";
 
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useRegModalStore } from "@/store/index";
-import { pfpCardImageUrl } from '@/constants/assetspath';
 
-import { feltToString, stringToFelt } from "@/utils/starknet";
-import { getPlayerPfPurl, getPlayerName } from '@/utils';
+import { getPlayerName } from '@/utils';
 import { RegistrationModal } from '../Modals';
 import { useNavigate } from 'react-router-dom';
+
+import { ConnectControllerButton, BurnerButtons } from "@/components";
 
 
 export const BaseNavbar = () => {
   const {
     setup: {
-        systemCalls: { register_player, update_player, invite, reply_invite },
-        clientComponents: { Game, GameState, Player },
-        toriiClient,
-        contractComponents,
+        clientComponents: { Player },
     },
     account,
 } = useDojo();
 
-  const { setOpen, regCount, incrementRegCount } = useRegModalStore();
+  const { setOpen, regCount } = useRegModalStore();
   const navigate = useNavigate();
+
+  //const { address, account } = useAccount();
 
   const entityId = getEntityIdFromKeys([
     BigInt(account?.account.address),
   ]) as Entity;
   // get current component values
   const player = useComponentValue(Player, entityId);
-  const playerName = getPlayerName(player) ?? "";
 
   useEffect(() => {
     // if there is no player or account is not yet loaded
@@ -75,36 +69,16 @@ export const BaseNavbar = () => {
             </div>
           </div>
 
-          <div className="flex items-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                
-                  
-                  <Button variant="ghost" 
-                  className="relative p-4 rounded-full
-                  hover:bg-blue-500/50
-                  flex items-center
-                  ">
-                    <span className="mx-4 text-xl text-white">
-                      {playerName}
-                    </span>
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={getPlayerPfPurl(player)} alt={"username"} />
-                      <AvatarFallback>{playerName}</AvatarFallback>
-                      {/* <AvatarImage src={profilePic} alt={username} />
-                      <AvatarFallback>{username[0]}</AvatarFallback> */}
-                    </Avatar>
-                  </Button>
 
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem 
-                  className="hover:cursor-pointer"
-                  onClick={() => setOpen(true)}>
-                  Edit Profile
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+
+          {/* Profile Dropdown */}
+          <div className="flex items-center">
+            {
+              import.meta.env.VITE_USECONTROLLER == "true" ?
+            <ConnectControllerButton />
+            :
+            <BurnerButtons/>
+            }
           </div>
         
         </div>
