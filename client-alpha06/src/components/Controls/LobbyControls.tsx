@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { FaChess, FaUserFriends } from "react-icons/fa";
 import { useDojo } from "@/dojo/useDojo";
 import { AccountInterface } from "starknet";
+import { useAccount } from '@starknet-react/core';
 
 export const LobbyControls = () => {
     const {
@@ -10,12 +11,25 @@ export const LobbyControls = () => {
             systemCalls: { create_game },
             clientComponents: { Game, GameState, Player },
         },
-        account,
+        //account,
     } = useDojo();
+
+    const { account, address, isConnected } = useAccount();
 
     const handleCreateGame = async () => {
         console.log("creating game");
-        await create_game(account.account as AccountInterface, 1);
+        if (account && isConnected) {
+            try{
+                //await create_game(account.account as AccountInterface, 1);
+                await create_game(account, 1);
+            }catch(e){
+                console.log("error creating game: ", e);
+            }
+        }else{
+            console.log("account not connected");
+            //todo: make toast for error message
+        }
+
     }  
     
 

@@ -1230,12 +1230,12 @@
       }
     ],
     "address": "0x154f50b2e8a50397b1a71d5964d0a8f299ea821867a00365bb9cb8488601640",
-    "transaction_hash": "0x5961c19ef5869512a674224b6fbac3d0e004580b638da839d514392f06c4b28",
-    "block_number": 3,
+    "transaction_hash": null,
+    "block_number": null,
     "seed": "rl_chess_contracts",
     "metadata": {
       "profile_name": "dev",
-      "rpc_url": "http://localhost:5050/"
+      "rpc_url": "https://api.cartridge.gg/x/mlv-rl-chess/katana"
     },
     "manifest_name": "dojo-world"
   },
@@ -1250,10 +1250,10 @@
   "contracts": [
     {
       "kind": "DojoContract",
-      "address": "0x3dd4355aad3b89a8f01ac523b7434376c7d6de049757defeeba3f4abec26edc",
+      "address": null,
       "class_hash": "0xebb3f6f5e1c76a796341d1a545a24cb66793c154c422939dba0649b64c17d4",
       "original_class_hash": "0xebb3f6f5e1c76a796341d1a545a24cb66793c154c422939dba0649b64c17d4",
-      "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
+      "base_class_hash": "0x0",
       "abi": [
         {
           "type": "impl",
@@ -1471,10 +1471,10 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0xc43883bdb0c2f329f21f7b680e3eb46b92a42b8ba43cce1ee6d8db5f31bdf4",
+      "address": null,
       "class_hash": "0x59a2e479ec0229c981769c284c2e83d3107f5a8e6e749427979f48aea22f5bf",
       "original_class_hash": "0x59a2e479ec0229c981769c284c2e83d3107f5a8e6e749427979f48aea22f5bf",
-      "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
+      "base_class_hash": "0x0",
       "abi": [
         {
           "type": "impl",
@@ -1866,10 +1866,10 @@
     },
     {
       "kind": "DojoContract",
-      "address": "0x2ff688f2ac96d256f3f09c91159cdcc41089de4e59649ff1806a821074eb99f",
+      "address": null,
       "class_hash": "0x29aaf81a958b39202b81b4099d7956084983166e45c5d9ff4fcdb0299e747ee",
       "original_class_hash": "0x29aaf81a958b39202b81b4099d7956084983166e45c5d9ff4fcdb0299e747ee",
-      "base_class_hash": "0x2427dd10a58850ac9a5ca6ce04b7771b05330fd18f2e481831ad903b969e6b2",
+      "base_class_hash": "0x0",
       "abi": [
         {
           "type": "impl",

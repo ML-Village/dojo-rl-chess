@@ -16,7 +16,12 @@ telegram = "https://t.me/dojoengine"
 default = "rl_chess_contracts"
 
 [env]
-rpc_url = "http://localhost:5050/"
-account_address = "0xb3ff441a68610b30fd5e2abbf3a1548eb6ba6f3559f2862bf2dc757e5828ca"
-private_key = "0x2bbf4f9fd0bbb2e60b0316c1fe0b76cf7a4d0198bd493ced9b8df2a3a24d68a"
+rpc_url = "https://api.cartridge.gg/x/mlv-rl-chess/katana"
+# RPC: http://slot.prod.svc.cluster.local/x/mlv-rl-chess/katana
+account_address = "0x6154d94660e5fd6becfec6e87d320cdc1c8956b724c01f469b4d384c17e9c98"
+private_key = "0x343c146f7e08016b137ecc5fcd0f25e009dc056d5ce5b0731b9d20edb6784df"
 world_address = "0x154f50b2e8a50397b1a71d5964d0a8f299ea821867a00365bb9cb8488601640" 
+
+# Endpoints:
+#   GRAPHQL: https://api.cartridge.gg/x/mlv-rl-chess/torii/graphql
+#   GRPC: https://api.cartridge.gg/x/mlv-rl-chess/torii
